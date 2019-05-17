@@ -1,0 +1,16 @@
+extends layout
+
+block content
+    h1 Register
+    p Register for innovation tokens
+    form(method='POST' action='/submit')
+        div.form-group
+            label(for='name') Name:
+            input#name.form-control(type='text', placeholder='first and last' name='name')
+        div.form-group
+            label(for='privatekey') Private Key:
+            input#privatekey.form-control(type='text', placeholder='private key' name='privatekey')
+        div.form-group
+            label(for='publickey') Public Key:
+            input#publickey.form-control(type='text', placeholder='public key' name='publickey')
+        button.btn.btn-primary(type='submit') Sign up

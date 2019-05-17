@@ -1,0 +1,14 @@
+version: "3.7"
+
+services:
+
+    postgres:
+        image: "postgres:latest"
+        container_name: "tokens_postgres"
+        ports:
+            - "54320:5432"
+        volumes:
+            - tokens_db:/var/lib/postgresql/data
+volumes:
+    tokens_db:
+
