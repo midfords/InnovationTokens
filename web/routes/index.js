@@ -24,6 +24,7 @@ router.get('/about', function(req, res, next) {
 
 router.post('/submit', function (req, res, next) {
   console.log('post caught.')
+  sequelize
 })
 
 module.exports = router;

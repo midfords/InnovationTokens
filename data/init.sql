@@ -9,19 +9,19 @@ CREATE TABLE users (
 );
 
 CREATE TABLE badges (
- id PRIMARY KEY,
+ id SERIAL PRIMARY KEY,
  name_en VARCHAR NOT NULL,
  name_fr VARCHAR NOT NULL,
  description_en VARCHAR NOT NULL,
- description_fr VARCHAR NOT NULL,
+ description_fr VARCHAR NOT NULL
 );
 
 CREATE TABLE user_badges (
- user_id INT CONSTRAINT REFERENCES users(id),
- badge_id INT CONSTRAINT REFERENCES badges(id),
+ user_id INTEGER REFERENCES users(id),
+ badge_id INTEGER REFERENCES badges(id)
 );
 
-INSERT INTO badges( id, name_en, name_fr, description_en, description_fr )
-  VALUES ( 1, 'Big Spender', 'Grand Dépensier', 'Spend 10 tokens in one day.', 'Dépensez 10 jetons en une journée.' )
-  , ( 2, 'Merchant', 'Marchand(e)', 'Trade a total of 10 tokens.', 'Échangez un total de 10 jetons.' )
-  , ( 3, 'Innovation Guru', 'Gourou de l''innovation', 'Spend a total of 100 tokens.', 'Dépense un total de 100 jetons.' );
+INSERT INTO badges( name_en, name_fr, description_en, description_fr )
+  VALUES ( 'Big Spender', 'Grand Dépensier', 'Spend 10 tokens in one day.', 'Dépensez 10 jetons en une journée.' )
+  , ( 'Merchant', 'Marchand(e)', 'Trade a total of 10 tokens.', 'Échangez un total de 10 jetons.' )
+  , ( 'Innovation Guru', 'Gourou de l''innovation', 'Spend a total of 100 tokens.', 'Dépense un total de 100 jetons.' );
