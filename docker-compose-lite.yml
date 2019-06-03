@@ -1,0 +1,31 @@
+
+version: "3.7"
+
+services:
+  postgres:
+    image: "postgres:latest"
+    container_name: "tokens_db"
+    environment:
+        - POSTGRES_DB=tokens_db
+        - POSTGRES_USER=tokens_usr
+        - POSTGRES_PASSWORD=password123
+    ports:
+        - "5432:5432"
+#    volumes:
+#        - $HOME/projects/tokens/volumes/postgres:/var/lib/postgresql/data
+
+  tokens:
+    build: "./web"
+    image: "tokens/node:latest"
+    container_name: tokens_node
+    links:
+        - postgres
+    ports:
+        - "80:3000"
+    environment:
+        - PG_DB=tokens_db
+        - PG_USR=tokens_usr
+        - PG_PW=password
+
+#volumes:
+#    tokens_db:

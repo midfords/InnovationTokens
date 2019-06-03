@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tokens-deployment
+  labels:
+    app: tokens
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tokens
+  template:
+    metadata:
+      labels:
+        app: tokens
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.7.9
+        ports:
+        - containerPort: 80
+        

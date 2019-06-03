@@ -2,26 +2,6 @@ extends layout
 
 block content
 
-    // Following Menu
-    .ui.large.top.fixed.hidden.menu
-        .ui.container
-            a.active.item Home
-            a.item Wallet
-            a.item About
-            .right.menu
-                .item
-                    a.ui.button Log in
-                .item
-                    a.ui.primary.button Sign Up
-
-    // Sidebar Menu
-    .ui.vertical.inverted.sidebar.menu
-        a.active.item Home
-        a.item Wallet
-        a.item About
-        a.item Login
-        a.item Sign Up
-
     // Page Contents
     .pusher
         .ui.inverted.vertical.banner-img.masthead.center.aligned.segment
@@ -39,25 +19,27 @@ block content
                 h1.ui.inverted.header
                     | Innovation Tokens
                 h2 Spend time.
-                .ui.huge.primary.button
+                a.ui.huge.primary.button(href="/register")
                     | Get Started
                     i.right.arrow.icon
         .ui.vertical.stripe.segment
             .ui.middle.aligned.stackable.grid.container
                 .row
                     .eight.wide.column
-                        h3.ui.header We Help You Find Time
+                        h3.ui.header About
                         p
-                            | Get Innovation Token allowance that you can spend developing cool new projects.
-                        h3.ui.header Earn, Trade and Spend
+                            | Innovation tokens is a program to encourage teams to innovate. It lets developers find time and track their work. It's fun and easy to get started.
                         p
-                            | Earn, trade and spend your tokens however you want.
+                            | To get started, sign up your team and share with your developers!
+                        h3.ui.header Why Join?
+                        p
+                            | Constantly learn new technologies and grow as a developer.
+                        p
+                            | Work on what interests you the most.
+                        p
+                            | Earn tokens by completing achievements and compete with others.
                     .six.wide.right.floated.column
                         img.ui.medium.image(src='/images/token.png')
-                .row
-                    .center.aligned.column
-                        b
-                        h2.ui.header What People Say
         .ui.vertical.stripe.quote.segment
             .ui.equal.width.stackable.internally.celled.grid
                 .center.aligned.row
@@ -67,3 +49,5 @@ block content
                     .column
                         h3 "Makes telling my boss off easy."
                         p - Anonymous
+
+        include footer

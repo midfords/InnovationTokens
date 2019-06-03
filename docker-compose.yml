@@ -58,8 +58,8 @@ services:
   postgres:
     image: "postgres:latest"
     volumes:
-        - tokens_db:/var/lib/postgresql/data
-    container_name: "tokens_postgres"
+        - $HOME/projects/tokens/volumes/postgres:/var/lib/postgresql/data
+    container_name: "tokens_db"
     ports:
         - "5432:5432"
 
@@ -67,7 +67,7 @@ services:
     image: "tokens:latest"
     container_name: tokens_node
     ports:
-        - "3000:3000"
+        - "80:3000"
 
-volumes:
-    tokens_db:
+#volumes:
+#    tokens_db:

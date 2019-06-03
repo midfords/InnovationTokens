@@ -18,6 +18,10 @@ router.get('/index', function(req, res, next) {
   res.render('index', { title: 'Innovation Tokens' })
 })
 
+router.get('/about', function(req, res, next) {
+  res.render('about.pug')
+})
+
 router.post('/submit', function (req, res, next) {
   console.log('post caught.')
 })

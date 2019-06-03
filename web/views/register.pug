@@ -1,16 +1,32 @@
 extends layout
 
 block content
-    h1 Register
-    p Register for innovation tokens
-    form(method='POST' action='/submit')
-        div.form-group
-            label(for='name') Name:
-            input#name.form-control(type='text', placeholder='first and last' name='name')
-        div.form-group
-            label(for='privatekey') Private Key:
-            input#privatekey.form-control(type='text', placeholder='private key' name='privatekey')
-        div.form-group
-            label(for='publickey') Public Key:
-            input#publickey.form-control(type='text', placeholder='public key' name='publickey')
-        button.btn.btn-primary(type='submit') Sign up
+
+    include header
+
+    .padding
+        h1 Register
+
+        form.ui.form(method='POST' action='/submit')
+            .field
+                label First Name
+                input(type='text', name='first-name', placeholder='First Name')
+            .field
+                label Last Name
+                input(type='text', name='last-name', placeholder='Last Name')
+            .field
+                label Team
+                input(type='text', name='team', placeholder='')
+            .field
+                label Email
+                input(type='email', name='email', placeholder='Email')
+            .field
+                label Public Key
+                textarea(rows='2')
+            .field
+                .ui.checkbox
+                    input(type='checkbox', tabindex='0')
+                    label Receive notification emails.
+            button.ui.button(type='submit') Submit
+
+    include footer
