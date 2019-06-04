@@ -3,7 +3,7 @@ var router = express.Router();
 
 
 const Sequelize = require('sequelize');
-const sequelize = new Sequelize('postgres://user:pass@0.0.0.0:5432');
+const sequelize = new Sequelize('postgres://tokens_usr:p455w0rd@localhost:5432/tokens_db');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -12,19 +12,19 @@ router.get('/', function(req, res, next) {
 
 router.get('/register', function(req, res, next) {
   res.render('register', { title: 'Innovation Tokens' })
-})
+});
 
 router.get('/index', function(req, res, next) {
   res.render('index', { title: 'Innovation Tokens' })
-})
+});
 
 router.get('/about', function(req, res, next) {
   res.render('about.pug')
-})
+});
 
 router.post('/submit', function (req, res, next) {
-  console.log('post caught.')
-  sequelize
-})
+  console.log('post caught.');
+  sequelize;
+});
 
 module.exports = router;

@@ -1,6 +1,8 @@
 
 \c tokens_db
 
+CREATE USER tokens_usr WITH PASSWORD 'p455w0rd';
+
 CREATE TABLE users (
  id SERIAL PRIMARY KEY,
  first VARCHAR NOT NULL,

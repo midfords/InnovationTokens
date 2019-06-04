@@ -4,29 +4,43 @@ block content
 
     include header
 
-    .padding
-        h1 Register
+    .ui.vertical.stripe.segment
+        .ui.middle.aligned.stackable.grid.container
+            .row
+                .sixteen.wide.column
+                    h1 Register
 
-        form.ui.form(method='POST' action='/submit')
-            .field
-                label First Name
-                input(type='text', name='first-name', placeholder='First Name')
-            .field
-                label Last Name
-                input(type='text', name='last-name', placeholder='Last Name')
-            .field
-                label Team
-                input(type='text', name='team', placeholder='')
-            .field
-                label Email
-                input(type='email', name='email', placeholder='Email')
-            .field
-                label Public Key
-                textarea(rows='2')
-            .field
-                .ui.checkbox
-                    input(type='checkbox', tabindex='0')
-                    label Receive notification emails.
-            button.ui.button(type='submit') Submit
+                    #register.ui.error.form.segment
+                        .two.fields
+                            .field
+                                label First Name
+                                input(placeholder='First Name', type='text')
+                            .field
+                                label Last Name
+                                input(placeholder='Last Name', type='text')
+                        .field
+                            label Email
+                            input(placeholder='Email', type='email')
+                        .field
+                            label Role
+                            .ui.selection.dropdown
+                                .default.text Select Team Role
+                                i.dropdown.icon
+                                input(type='hidden', name='role')
+                                .menu
+                                    .item(data-value='manager') Manager
+                                    .item(data-value='developer') Developer
+                                    .item(data-value='tester') Tester
+                        .field
+                            label Username
+                            input(placeholder='Username', type='text')
+                        .field
+                            label Public Key
+                            input(type='password')
+                        .inline.field
+                            .ui.checkbox
+                                input(type='checkbox')
+                                label Receive Notification Emails.
+                        .ui.submit.button(onclick='validate()') Register
 
     include footer
