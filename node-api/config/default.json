@@ -1,0 +1,5 @@
+{
+  "jwtPrivateKey": "todo_change",
+  "port": "3900",
+  "requiresAuth": true
+}

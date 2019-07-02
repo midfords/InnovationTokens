@@ -1,0 +1,4 @@
+{
+  "jwtPrivateKey": "tokens_jwtPrivateKey",
+  "db": "tokens_db"
+}

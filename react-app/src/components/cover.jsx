@@ -32,9 +32,8 @@ class Cover extends Component {
           <div className="ui text container">
             <h1 className="ui inverted header">Innovation Tokens</h1>
             <h2> Spend time. </h2>
-            <a href="/tokens" className="ui huge primary button">
-              Get Started
-              <i className="right arrow icon" />
+            <a href="/dashboard" className="ui huge primary button">
+              Go to Innovation Tokens
             </a>
           </div>
         </div>
