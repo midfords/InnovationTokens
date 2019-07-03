@@ -10,6 +10,28 @@ router.get("/me", auth, async (req, res) => {
   res.send(user);
 });
 
+router.get("/", async (req, res) => {
+  const users = await User.find().select("-password");
+  res.send(users);
+});
+
+router.get("/managers", async (req, res) => {
+  const { query } = req.query;
+
+  if (query === undefined || query.length < 3) return res.send([]);
+
+  const managers = await User.find({
+    name: new RegExp(query, "i"),
+    roles: "manager"
+  }).select({
+    _id: 1,
+    name: 1,
+    email: 1
+  });
+
+  res.send(managers);
+});
+
 router.post("/", async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);

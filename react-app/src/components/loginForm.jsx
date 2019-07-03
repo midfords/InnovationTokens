@@ -1,11 +1,11 @@
-import React from "react";
+import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
+import { Button, Form, Header } from "semantic-ui-react";
 import Joi from "joi-browser";
-import Form from "./common/form";
 import NavBar from "./common/navbar";
 import auth from "../services/authService";
 
-class LoginForm extends Form {
+class LoginForm extends Component {
   state = {
     data: { email: "", password: "" },
     errors: {}
@@ -20,23 +20,10 @@ class LoginForm extends Form {
       .label("Password")
   };
 
-  doSubmit = async () => {
-    try {
-      const { data } = this.state;
-      await auth.login(data.email, data.password);
-      const { state } = this.props.location;
-      window.location = state ? state.from.pathname : "/";
-    } catch (ex) {
-      if (ex.response && ex.response.status === 400) {
-        const errors = { ...this.state.errors };
-        errors.username = ex.response.data;
-        this.setState({ errors });
-      }
-    }
-  };
+  doSubmit = async () => {};
 
   render() {
-    //    if (auth.getCurrentUser()) return <Redirect to="/" />;
+    if (auth.getCurrentUser()) return <Redirect to="/dashboard" />;
 
     return (
       <React.Fragment>
@@ -44,14 +31,25 @@ class LoginForm extends Form {
         <div className="ui main text container segment">
           <div className="ui middle aligned center aligned grid">
             <div className="column">
-              <h1 className="ui header">Login</h1>
-              <form className="ui large form" onSubmit={this.handleSubmit}>
-                {this.renderInput("email", "Email")}
-                {this.renderInput("password", "Password", "password")}
-                {this.renderButton("Login")}
-              </form>
+              <Header>Login</Header>
+              <Form size="large">
+                <Form.Input
+                  fluid
+                  icon="user"
+                  iconPosition="left"
+                  placeholder="@hrsdc-rhdcc.gc.ca"
+                />
+                <Form.Input
+                  fluid
+                  icon="lock"
+                  iconPosition="left"
+                  placeholder="Password"
+                  type="password"
+                />
+                <Button primary>Login</Button>
+              </Form>
               <div className="ui message">
-                Or register <a href="#">here</a>.
+                <a href="#">Sign up</a>.
               </div>
             </div>
           </div>

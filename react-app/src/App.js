@@ -3,7 +3,7 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import Footer from "./components/common/footer";
 import Cover from "./components/cover";
 import LoginForm from "./components/loginForm";
-import RegisterForm from "./components/registerFrom";
+import RegisterForm from "./components/registerForm";
 import Dashboard from "./components/dashboard";
 import "semantic-ui-css/semantic.min.css";
 import "semantic-ui-react";
