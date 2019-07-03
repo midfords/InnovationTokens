@@ -9,8 +9,6 @@ http.setJwt(getJwt());
 
 export async function login(email, password) {
   const { data: jwt } = await http.post(apiEndpoint, { email, password });
-  console.log(jwt);
-
   window.localStorage.setItem(tokenKey, jwt);
 }
 
@@ -24,7 +22,7 @@ export function logout() {
 
 export function getCurrentUser() {
   try {
-    const jwt = window.localStroage.getItem(tokenKey);
+    const jwt = window.localStorage.getItem(tokenKey);
     return jwtDecode(jwt);
   } catch (ex) {
     return null;

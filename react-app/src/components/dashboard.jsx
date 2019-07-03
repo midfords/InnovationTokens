@@ -4,7 +4,7 @@ import Balance from "./dashboard/balance";
 import Goal from "./dashboard/goal";
 import Feed from "./dashboard/feed";
 import Leaderboard from "./dashboard/leaderboard";
-import BalanceActions from "./balanceActions";
+import BalanceActions from "./dashboard/balanceActions";
 
 class Tokens extends Component {
   render() {
