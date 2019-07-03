@@ -1,0 +1,2 @@
+mongoimport --db tokens --collection users --drop --file sample_users.json --jsonArray
+mongoimport --db tokens --collection transactions --drop --file sample_transactions.json --jsonArray

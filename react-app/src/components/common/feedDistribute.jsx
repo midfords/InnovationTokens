@@ -1,20 +1,21 @@
 import React from "react";
+import { Feed } from "semantic-ui-react";
 
 const FeedDistribute = () => {
   return (
-    <div className="ui feed">
-      <div className="event item">
-        <div className="label">
-          <img src="/avatars/coins.svg" />
-        </div>
-        <div className="content">
-          <div className="date">Last week</div>
-          <div className="summary">1000 Tokens Distributed!</div>
-          <div className="extra">Everybody has received new tokens!</div>
-          <div className="meta">Hash: PMcN1lV9DwDE5pApTXp943Ufnwm09i.</div>
-        </div>
-      </div>
-    </div>
+    <Feed.Event>
+      <Feed.Label>
+        <img src="/avatars/coins.svg" />
+      </Feed.Label>
+      <Feed.Content>
+        <Feed.Summary>
+          1000 Tokens Distributed!
+          <Feed.Date>Last week</Feed.Date>
+        </Feed.Summary>
+        <Feed.Extra>Everybody has received new tokens!</Feed.Extra>
+        <Feed.Meta>Hash: Q0AnmjsG7Rdlu8ZKygcH3Fs2QNqXK8.</Feed.Meta>
+      </Feed.Content>
+    </Feed.Event>
   );
 };
 

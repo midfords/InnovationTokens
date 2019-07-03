@@ -1,0 +1,51 @@
+[
+    {
+        "kind": "spend",
+        "user": {
+            "id": "5d1c3b84e1e8891f5a8e58ec",
+            "name": "Jonathan Dure"
+        },
+        "description": "Building an Innovation Tokens project in React.",
+        "amount": 5,
+        "hash": "PMcN1lV9DwDE5pApTXp943Ufnwm09i"
+    },
+    {
+        "kind": "send",
+        "user": {
+            "id": "5d1c3af6e1e8891f5a8e58ea",
+            "name": "Sean Midford"
+        },
+        "user2": {
+            "id": "5d1c3b5fe1e8891f5a8e58eb",
+            "name": "Eric Wu"
+        },
+        "amount": 5,
+        "hash": "4F2DWYg96PMDLc10mDnvOJEBgRuTuA"
+    },
+    {
+        "kind": "dist",
+        "description": "Everybody has received new tokens!",
+        "amount": "1000",
+        "hash": "Q0AnmjsG7Rdlu8ZKygcH3Fs2QNqXK8"
+    },
+    {
+        "kind": "spend",
+        "user": {
+            "id": "5d1c3af6e1e8891f5a8e58ea",
+            "name": "Sean Midford"
+        },
+        "description": "Experimenting with Docker.",
+        "amount": 2,
+        "hash": "XvvwEhTXCETfI1MFY5kNRxsTQ65igL"
+    },
+    {
+        "kind": "spend",
+        "user": {
+            "id": "5d1c3b5fe1e8891f5a8e58eb",
+            "name": "Eric Wu"
+        },
+        "description": "Innovation Tokens.",
+        "amount": 8,
+        "hash": "KE1dU5sfxkk8gixzd74Zc6GsKYrhQP"
+    }
+]

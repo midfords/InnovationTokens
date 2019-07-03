@@ -23,7 +23,7 @@ class LoginForm extends Form {
   doSubmit = async () => {
     try {
       const { data } = this.state;
-      await auth.login(data.username, data.password);
+      await auth.login(data.email, data.password);
       const { state } = this.props.location;
       window.location = state ? state.from.pathname : "/";
     } catch (ex) {

@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import Joi from "joi-browser";
 import _ from "lodash";
 import Input from "./input";
-//import Select from "./select";
+import Checkbox from "./checkbox";
+import Search from "./search";
 
 class Form extends Component {
   state = { data: {}, errors: {} };
@@ -57,20 +58,25 @@ class Form extends Component {
     );
   }
 
-  // renderSelect(name, label, options) {
-  //   const { data, errors } = this.state;
+  renderSearch(name, label, placeholder, options) {
+    const { data, errors } = this.state;
 
-  //   return (
-  //     <Select
-  //       name={name}
-  //       value={data[name]}
-  //       label={label}
-  //       options={options}
-  //       onChange={this.handleChange}
-  //       error={errors[name]}
-  //     />
-  //   );
-  // }
+    return (
+      <Search
+        name={name}
+        value={data[name]}
+        label={label}
+        options={options}
+        placeholder={placeholder}
+        onChange={this.handleChange}
+        error={errors[name]}
+      />
+    );
+  }
+
+  renderCheckbox(name, label) {
+    return <Checkbox name={name} label={label} />;
+  }
 
   renderInput(name, label, type = "text") {
     const { data, errors } = this.state;

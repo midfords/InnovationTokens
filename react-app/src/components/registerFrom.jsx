@@ -1,12 +1,12 @@
 import React from "react";
+import { Form, Checkbox, Button } from "semantic-ui-react";
 import Joi from "joi-browser";
-import Form from "./common/form";
+import NavBar from "./common/navbar";
 import auth from "../services/authService";
-import * as userService from "../services/userService";
 
 class RegisterFrom extends Form {
   state = {
-    data: { name: "", email: "", password: "" },
+    data: { username: "", email: "", password: "" },
     errors: {}
   };
 
@@ -30,22 +30,30 @@ class RegisterFrom extends Form {
     return (
       <React.Fragment>
         <NavBar />
-        <div className="ui main text container segment">
-          <div className="ui middle aligned center aligned grid">
+        {/* <div className="ui main text container segment">
+          <div className="ui aligned grid">
             <div className="column">
-              <h1 className="ui header">Login</h1>
-              <form className="ui large form" onSubmit={this.handleSubmit}>
-                {this.renderInput("email", "Email")}
-                {this.renderInput("password", "Password", "password")}
-                {this.renderButton("Login")}
-              </form>
-              <div className="ui message">
-                Or register <a href="#">here</a>.
-              </div>
+              <h1 className="ui centered header">Sign up</h1>
+              <Form>
+                <Form.Field>
+                  <label>First Name</label>
+                  <input placeholder="First Name" />
+                </Form.Field>
+                <Form.Field>
+                  <label>Last Name</label>
+                  <input placeholder="Last Name" />
+                </Form.Field>
+                <Form.Field>
+                  <Checkbox label="I agree to the Terms and Conditions" />
+                </Form.Field>
+                <Button type="submit">Submit</Button>
+              </Form>
             </div>
           </div>
-        </div>
+        </div> */}
       </React.Fragment>
     );
   }
 }
+
+export default RegisterFrom;

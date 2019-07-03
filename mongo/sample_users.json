@@ -1,0 +1,26 @@
+[
+    {
+        "_id": "5d1c3af6e1e8891f5a8e58ea",
+        "name": "Sean Midford",
+        "email": "sean.midford@hrsdc-rhdcc.gc.ca",
+        "password": "$2b$10$Dw2pAl8b6qVqIQTdZiMKc.DEcXgz28y5oZrGg2bDmOTrr8RVGYa9C",
+        "roles": ["manager", "admin"],
+        "balance": 23
+    },
+    {
+        "_id": "5d1c3b5fe1e8891f5a8e58eb",
+        "name": "Eric Wu",
+        "email": "eric.we@hrsdc-rhdcc.gc.ca",
+        "password": "$2b$10$Dw2pAl8b6qVqIQTdZiMKc.DEcXgz28y5oZrGg2bDmOTrr8RVGYa9C",
+        "roles": [],
+        "balance": 3
+    },
+    {
+        "_id": "5d1c3b84e1e8891f5a8e58ec",
+        "name": "Jonathan Dure",
+        "email": "jonathan.dure@hrsdc-rhdcc.gc.ca",
+        "password": "$2b$10$Dw2pAl8b6qVqIQTdZiMKc.DEcXgz28y5oZrGg2bDmOTrr8RVGYa9C",
+        "roles": ["manager"],
+        "balance": 1000
+    }
+]

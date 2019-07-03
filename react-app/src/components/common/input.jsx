@@ -3,6 +3,7 @@ import React from "react";
 const Input = ({ name, label, error, ...rest }) => {
   return (
     <div className="ui field">
+      <label>{label}</label>
       <div className="ui left icon input">
         <i className="user icon" />
         <input

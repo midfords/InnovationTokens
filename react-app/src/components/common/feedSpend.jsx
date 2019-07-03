@@ -1,22 +1,21 @@
 import React from "react";
+import { Feed } from "semantic-ui-react";
 
-const FeedSpend = () => {
+const FeedSpend = ({ user, amount, description, hash }) => {
   return (
-    <div className="ui feed">
-      <div className="event item">
-        <div className="label">
-          <img src="/avatars/avatar-3.svg" />
-        </div>
-        <div className="content">
-          <div className="date">Just now</div>
-          <div className="summary">
-            <a>Jonathan Dure</a> spent 5 tokens.
-          </div>
-          <div className="extra">Building an Innovation Tokens project.</div>
-          <div className="meta">Hash: PMcN1lV9DwDE5pApTXp943Ufnwm09i.</div>
-        </div>
-      </div>
-    </div>
+    <Feed.Event>
+      <Feed.Label>
+        <img src="/avatars/avatar-3.svg" />
+      </Feed.Label>
+      <Feed.Content>
+        <Feed.Summary>
+          <Feed.User>{user.name}</Feed.User> spent {amount} tokens.
+          <Feed.Date>Just now</Feed.Date>
+        </Feed.Summary>
+        <Feed.Extra>{description}</Feed.Extra>
+        <Feed.Meta>Hash: {hash}.</Feed.Meta>
+      </Feed.Content>
+    </Feed.Event>
   );
 };
 
