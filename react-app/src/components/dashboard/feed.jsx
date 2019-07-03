@@ -50,13 +50,15 @@ class InnovationFeed extends Component {
     console.log(this.state.transactions);
 
     return (
-      <div className="six wide column ui segment">
+      <div className="ui segment">
         <Header as="h3">
           <Icon name="rss" />
           Innovation Feed
         </Header>
         <Divider />
         <Feed>{this.state.feed.map(item => this.renderTransaction(item))}</Feed>
+        <Divider />
+        <a href="#">Load More</a>
       </div>
     );
   }

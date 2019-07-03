@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Feed } from "semantic-ui-react";
 
 const FeedSpend = ({ user, amount, description, hash }) => {
@@ -9,7 +10,10 @@ const FeedSpend = ({ user, amount, description, hash }) => {
       </Feed.Label>
       <Feed.Content>
         <Feed.Summary>
-          <Feed.User>{user.name}</Feed.User> spent {amount} tokens.
+          <Link to={`/profile/${user.id}`}>
+            <Feed.User>{user.name}</Feed.User>
+          </Link>{" "}
+          spent {amount} tokens.
           <Feed.Date>Just now</Feed.Date>
         </Feed.Summary>
         <Feed.Extra>{description}</Feed.Extra>

@@ -4,6 +4,7 @@ const config = require("config");
 const Joi = require("joi");
 
 const userSchema = new mongoose.Schema({
+  _id: String,
   name: {
     type: String,
     required: true,

@@ -15,6 +15,15 @@ router.get("/", async (req, res) => {
   res.send(users);
 });
 
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+
+  if (id === undefined) return res.status(400).send("No user ID provided.");
+
+  const user = await User.findOne({ _id: id }).select("-password");
+  res.send(user);
+});
+
 router.get("/managers", async (req, res) => {
   const { query } = req.query;
 

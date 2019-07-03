@@ -6,7 +6,7 @@ import auth from "../services/authService";
 
 class RegisterForm extends Component {
   state = {
-    data: { username: "", email: "", password: "" },
+    data: { first: "", last: "", email: "", password: "" },
     errors: {}
   };
 
@@ -57,6 +57,20 @@ class RegisterForm extends Component {
                     placeholder="Email"
                   />
                 </Form.Field>
+                <Form.Group widths="equal">
+                  <Form.Input
+                    required
+                    fluid
+                    label="Password"
+                    placeholder="Password"
+                  />
+                  <Form.Input
+                    fluid
+                    required
+                    label="Confirm"
+                    placeholder="Confirm"
+                  />
+                </Form.Group>
                 <Form.Field required>
                   <label>Manager</label>
                   <Form.Input required placeholder="Manager's name" />

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
-import { Button, Form, Header } from "semantic-ui-react";
+import { Button, Form, Header, Input } from "semantic-ui-react";
 import Joi from "joi-browser";
 import NavBar from "./common/navbar";
 import auth from "../services/authService";
@@ -33,16 +33,17 @@ class LoginForm extends Component {
             <div className="column">
               <Header>Login</Header>
               <Form size="large">
+                <Form.Field>
+                  <Input
+                    label={{ basic: true, content: "@hrsdc-rhdcc.gc.ca" }}
+                    labelPosition="right"
+                    placeholder="Email"
+                  />
+                </Form.Field>
                 <Form.Input
                   fluid
-                  icon="user"
-                  iconPosition="left"
-                  placeholder="@hrsdc-rhdcc.gc.ca"
-                />
-                <Form.Input
-                  fluid
-                  icon="lock"
-                  iconPosition="left"
+                  icon="eye slash"
+                  iconPosition="right"
                   placeholder="Password"
                   type="password"
                 />
