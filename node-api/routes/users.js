@@ -15,22 +15,13 @@ router.get("/", async (req, res) => {
   res.send(users);
 });
 
-router.get("/:id", async (req, res) => {
-  const { id } = req.params;
-
-  if (id === undefined) return res.status(400).send("No user ID provided.");
-
-  const user = await User.findOne({ _id: id }).select("-password");
-  res.send(user);
-});
-
 router.get("/managers", async (req, res) => {
   const { query } = req.query;
 
-  if (query === undefined || query.length < 3) return res.send([]);
+  if (query === undefined) return res.send([]);
 
   const managers = await User.find({
-    name: new RegExp(query, "i"),
+    $or: [{ name: new RegExp(query, "i") }, { email: new RegExp(query, "i") }],
     roles: "manager"
   }).select({
     _id: 1,
@@ -39,6 +30,15 @@ router.get("/managers", async (req, res) => {
   });
 
   res.send(managers);
+});
+
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+
+  if (id === undefined) return res.status(400).send("No user ID provided.");
+
+  const user = await User.findOne({ _id: id }).select("-password");
+  res.send(user);
 });
 
 router.post("/", async (req, res) => {

@@ -1,6 +1,6 @@
 import React from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
-import Footer from "./components/common/footer";
+//import Footer from "./components/common/footer";
 import Cover from "./components/cover";
 import LoginForm from "./components/loginForm";
 import RegisterForm from "./components/registerForm";
@@ -24,7 +24,6 @@ function App() {
           <Redirect from="/" to="/cover" />
         </Switch>
       </div>
-      <Footer />
     </React.Fragment>
   );
 }
