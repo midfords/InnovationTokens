@@ -16,7 +16,7 @@ const FeedSend = ({ user, user2, amount, hash }) => {
           gave{" "}
           <Link to={`/profile/${user2.id}`}>
             <Feed.User>{user2.name}</Feed.User>
-          </Link>
+          </Link>{" "}
           {amount} token
           {amount > 1 ? "s" : ""}.<Feed.Date>4 hours ago</Feed.Date>
         </Feed.Summary>
