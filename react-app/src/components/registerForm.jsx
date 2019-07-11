@@ -4,7 +4,8 @@ import {
   Item,
   Input,
   Button,
-  Image,
+  Popup,
+  Icon,
   Grid,
   GridColumn,
   Search
@@ -160,7 +161,14 @@ class RegisterForm extends Component {
         <div className="ui main text container eight column stackable aligned grid segment">
           <div className="ui middle aligned grid">
             <div className="column">
-              <h1 className="ui centered header">Sign up</h1>
+              <h1 className="ui centered header">
+                Welcome to Innovation Tokens!
+              </h1>
+              <div className="ui centered aligned grid">
+                Just a couple of things before you're ready to start innovating.
+              </div>
+              <br />
+              <br />
               <Form onSubmit={this.doSubmit}>
                 <Form.Group widths="equal">
                   <Form.Input
@@ -232,15 +240,20 @@ class RegisterForm extends Component {
                   error={errors.manager}
                 >
                   <label>Manager</label>
-                  <Search
-                    className="field input"
-                    placeholder="Manager's Name"
-                    loading={isLoading}
-                    minCharacters={2}
-                    onResultSelect={this.handleResultSelect}
-                    onSearchChange={this.handleSearchChange}
-                    results={results}
-                    value={value}
+                  <Popup
+                    content="Find your manager by name or email. If you can't find your manager they might not be registered yet."
+                    trigger={
+                      <Search
+                        className="field input"
+                        placeholder="Manager's Name"
+                        loading={isLoading}
+                        minCharacters={2}
+                        onResultSelect={this.handleResultSelect}
+                        onSearchChange={this.handleSearchChange}
+                        results={results}
+                        value={value}
+                      />
+                    }
                   />
                 </Form.Field>
                 <Form.Checkbox
