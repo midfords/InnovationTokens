@@ -111,6 +111,13 @@ class RegisterForm extends Component {
     this.setState({ data });
   };
 
+  validateProperty = ({ name, value }) => {
+    const obj = { [name]: value };
+    const schema = { [name]: this.schema[name] };
+    const { error } = Joi.validate(obj, schema);
+    return error ? error.details[0].message : null;
+  };
+
   updateData = (k, v) => {
     const data = { ...this.state.data };
     data[k] = v;
@@ -121,8 +128,15 @@ class RegisterForm extends Component {
     if (!this.state.data.email.includes("@hrsdc-rhdcc.gc.ca"))
       this.state.data.email = `${this.state.data.email}@hrsdc-rhdcc.gc.ca`;
 
-    const { error } = Joi.validate(this.state.data, this.schema);
-    if (error) return;
+    const error = Joi.validate(this.state.data, this.schema, {
+      abortEarly: false
+    });
+    if (error) {
+      console.log(error);
+
+      this.setState({ errors: error });
+      return;
+    }
 
     try {
       const res = await register(this.state.data);
@@ -143,8 +157,8 @@ class RegisterForm extends Component {
 
     return (
       <React.Fragment>
-        <div className="ui main text container segment">
-          <div className="ui aligned grid">
+        <div className="ui main text container eight column stackable aligned grid segment">
+          <div className="ui middle aligned grid">
             <div className="column">
               <h1 className="ui centered header">Sign up</h1>
               <Form onSubmit={this.doSubmit}>
