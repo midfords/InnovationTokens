@@ -14,6 +14,7 @@ import Joi from "joi-browser";
 import NavBar from "./common/navbar";
 import auth from "../services/authService";
 import http from "../services/httpService";
+import { register } from "../services/userService";
 import ProfilePic from "./common/profilePic";
 
 class RegisterForm extends Component {
@@ -23,6 +24,7 @@ class RegisterForm extends Component {
       last: "",
       email: "",
       password: "",
+      confirm: "",
       profileId: "",
       managerId: ""
     },
@@ -36,17 +38,29 @@ class RegisterForm extends Component {
   };
 
   schema = {
+    first: Joi.string()
+      .required()
+      .label("First"),
+    last: Joi.string()
+      .required()
+      .label("Last"),
     email: Joi.string()
-      .email()
       .required()
       .label("Email"),
     password: Joi.string()
       .min(5)
       .required()
       .label("Password"),
-    name: Joi.string()
+    confirm: Joi.string().label("Confirm"),
+    profileId: Joi.number()
+      .integer()
+      .min(1)
+      .max(8)
       .required()
-      .label("Name")
+      .label("ProfileId"),
+    managerId: Joi.string()
+      .label("ManagerId")
+      .allow("")
   };
 
   handleResultSelect = (e, { result }) => {
@@ -97,10 +111,33 @@ class RegisterForm extends Component {
     this.setState({ data });
   };
 
-  doSubmit = async () => {};
+  updateData = (k, v) => {
+    const data = { ...this.state.data };
+    data[k] = v;
+    this.setState({ data });
+  };
+
+  doSubmit = async () => {
+    if (!this.state.data.email.includes("@hrsdc-rhdcc.gc.ca"))
+      this.state.data.email = `${this.state.data.email}@hrsdc-rhdcc.gc.ca`;
+
+    const { error } = Joi.validate(this.state.data, this.schema);
+    if (error) return;
+
+    try {
+      const res = await register(this.state.data);
+      auth.loginWithJwt(res.headers["x-auth-token"]);
+    } catch (ex) {
+      if (ex.res && ex.res.status === 400) {
+        const errors = { ...this.state.errors };
+        errors.first = ex.res.data;
+        this.setState({ errors });
+      }
+    }
+  };
 
   render() {
-    const { isManager } = this.state;
+    const { isManager, errors } = this.state;
     const { isLoading, value, results } = this.state.search;
 
     return (
@@ -109,19 +146,23 @@ class RegisterForm extends Component {
           <div className="ui aligned grid">
             <div className="column">
               <h1 className="ui centered header">Sign up</h1>
-              <Form>
+              <Form onSubmit={this.doSubmit}>
                 <Form.Group widths="equal">
                   <Form.Input
                     required
                     fluid
                     label="First Name"
                     placeholder="First name"
+                    onChange={e => this.updateData("first", e.target.value)}
+                    error={errors.first}
                   />
                   <Form.Input
                     fluid
                     required
                     label="Last Name"
                     placeholder="Last name"
+                    onChange={e => this.updateData("last", e.target.value)}
+                    error={errors.last}
                   />
                 </Form.Group>
                 <Form.Field required>
@@ -130,23 +171,31 @@ class RegisterForm extends Component {
                     label={{ basic: true, content: "@hrsdc-rhdcc.gc.ca" }}
                     labelPosition="right"
                     placeholder="Email"
+                    onChange={e => this.updateData("email", e.target.value)}
+                    error={errors.email}
                   />
                 </Form.Field>
                 <Form.Group widths="equal">
                   <Form.Input
                     required
                     fluid
+                    type="password"
                     label="Password"
                     placeholder="Password"
+                    onChange={e => this.updateData("password", e.target.value)}
+                    error={errors.password}
                   />
                   <Form.Input
                     fluid
                     required
+                    type="password"
                     label="Confirm"
                     placeholder="Confirm"
+                    onChange={e => this.updateData("confirm", e.target.value)}
+                    error={errors.confirm}
                   />
                 </Form.Group>
-                <Form.Field required>
+                <Form.Field required error={errors.profile}>
                   <label>Profile Picture</label>
                   <Grid>
                     {_.range(1, 9).map(i => (
@@ -162,7 +211,11 @@ class RegisterForm extends Component {
                     ))}
                   </Grid>
                 </Form.Field>
-                <Form.Field required disabled={isManager}>
+                <Form.Field
+                  required
+                  disabled={isManager}
+                  error={errors.manager}
+                >
                   <label>Manager</label>
                   <Search
                     className="field input"
@@ -180,7 +233,20 @@ class RegisterForm extends Component {
                   label="I am a manager."
                   onChange={this.handleCheckChange}
                 />
-                <Button type="submit">Sign up</Button>
+                <Button
+                  type="submit"
+                  disabled={
+                    !this.state.data.first ||
+                    !this.state.data.last ||
+                    !this.state.data.email ||
+                    !this.state.data.password ||
+                    !this.state.data.confirm ||
+                    !this.state.data.profileId ||
+                    (!this.state.isManager && !this.state.data.managerId)
+                  }
+                >
+                  Sign up
+                </Button>
               </Form>
             </div>
           </div>

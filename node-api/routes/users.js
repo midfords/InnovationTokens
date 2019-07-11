@@ -16,6 +16,8 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/managers", async (req, res) => {
+  console.log("hit managers");
+
   const { query } = req.query;
 
   if (query === undefined) return res.send([]);
@@ -48,11 +50,15 @@ router.post("/", async (req, res) => {
   let user = await User.findOne({ email: req.body.email });
   if (user) return res.status(400).send("User already registered.");
 
-  user = new User(_.pick(req.body, ["name", "email", "password"]));
+  user = new User(_.pick(req.body, ["email", "password", "profileId"]));
   const salt = await bcrypt.genSalt(10);
   user.password = await bcrypt.hash(user.password, salt);
+  user.name = `${req.body.first} ${req.body.last}`;
   user.balance = 10;
-  user.isAdmin = true;
+
+  if (req.body.managerId) user.managerId = req.body.managerId;
+  else user.roles = ["manager"];
+
   await user.save();
 
   const token = user.generateAuthToken();

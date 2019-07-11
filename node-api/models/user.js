@@ -26,6 +26,13 @@ const userSchema = new mongoose.Schema({
     minlength: 5,
     maxlength: 1024
   },
+  profileId: {
+    type: Number,
+    required: true
+  },
+  managerId: {
+    type: String
+  },
   roles: [String],
   balance: Number
 });
@@ -41,7 +48,11 @@ const User = mongoose.model("User", userSchema);
 
 function validateUser(user) {
   const schema = {
-    name: Joi.string()
+    first: Joi.string()
+      .min(1)
+      .max(255)
+      .required(),
+    last: Joi.string()
       .min(1)
       .max(255)
       .required(),
@@ -53,7 +64,13 @@ function validateUser(user) {
     password: Joi.string()
       .min(5)
       .max(255)
-      .required()
+      .required(),
+    profileId: Joi.number()
+      .integer()
+      .min(1)
+      .max(8)
+      .required(),
+    managerId: Joi.string().allow("")
   };
 
   return Joi.validate(user, schema);
