@@ -1,26 +1,50 @@
 [
     {
-        "_id": "5d1c3af6e1e8891f5a8e58ea",
-        "name": "Sean Midford",
-        "email": "sean.midford@hrsdc-rhdcc.gc.ca",
-        "password": "$2b$10$Dw2pAl8b6qVqIQTdZiMKc.DEcXgz28y5oZrGg2bDmOTrr8RVGYa9C",
-        "roles": ["manager", "admin"],
-        "balance": 23
-    },
-    {
-        "_id": "5d1c3b5fe1e8891f5a8e58eb",
-        "name": "Eric Wu",
-        "email": "eric.wu@hrsdc-rhdcc.gc.ca",
-        "password": "$2b$10$Dw2pAl8b6qVqIQTdZiMKc.DEcXgz28y5oZrGg2bDmOTrr8RVGYa9C",
+        "_id": "5d269717dd3a7177c4ac41fe",
         "roles": [],
-        "balance": 3
+        "first": "Billy",
+        "last": "Bob",
+        "email": "billy.bob@hrsdc-rhdcc.gc.ca",
+        "password": "$2b$10$rlzxXkXYggjwcBq4kcRFd.8jtseOSCKa9M8qHHrD.P1HYPDFM/TZy",
+        "profileId": 3,
+        "balance": 10,
+        "managerId": "5d269872dd3a7177c4ac41ff",
+        "__v": 0
     },
     {
-        "_id": "5d1c3b84e1e8891f5a8e58ec",
-        "name": "Jonathan Dure",
-        "email": "jonathan.dure@hrsdc-rhdcc.gc.ca",
-        "password": "$2b$10$Dw2pAl8b6qVqIQTdZiMKc.DEcXgz28y5oZrGg2bDmOTrr8RVGYa9C",
+        "_id": "5d269872dd3a7177c4ac41ff",
         "roles": ["manager"],
-        "balance": 1000
+        "first": "James",
+        "last": "Cameron",
+        "email": "james.cameron@hrsdc-rhdcc.gc.ca",
+        "password": "$2b$10$HyK1IoZGOWEx3JqQeSFuZOXO0GEh30ozjd2LPy8JyXla7mAoh6HM.",
+        "profileId": 6,
+        "balance": 10,
+        "__v": 0
+    },
+    {   "_id": "5d269b37a3270cbcbf964002",
+        "roles": [],
+        "first": "Peter",
+        "last": "Parker",
+        "email": "peter.parker@hrsdc-rhdcc.gc.ca",
+        "password": "$2b$10$7fHgpjxmhUKDB/7bFkc6zeC2zWMehnptiDsTt7PWTQt1TrjVHcxeC",
+        "profileId": 7,
+        "balance": 10,
+        "managerId": "5d269872dd3a7177c4ac41ff",
+        "__v": 0
+    },
+    {
+        "_id": "5d269ba9a3270cbcbf964003",
+        "roles": [
+            "manager",
+            "admin"
+        ],
+        "first": "Elliott",
+        "last": "Smith",
+        "email": "elliott.smith@hrsdc-rhdcc.gc.ca",
+        "password": "$2b$10$vsO8zVltWr.eLESfRsFlPuOtvQpo03PXFNwJxbX3Uk4JOqMn9nmQO",
+        "profileId": 2,
+        "balance": 10,
+        "__v": 0
     }
 ]

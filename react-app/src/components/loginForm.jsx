@@ -76,7 +76,7 @@ class LoginForm extends Component {
                 <Button primary>Login</Button>
               </Form>
               <div className="ui message">
-                <Link to="/register">Sign up</Link>.
+                Or <Link to="/register">sign up</Link>.
               </div>
             </div>
           </div>

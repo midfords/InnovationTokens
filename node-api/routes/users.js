@@ -16,18 +16,21 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/managers", async (req, res) => {
-  console.log("hit managers");
-
   const { query } = req.query;
 
   if (query === undefined) return res.send([]);
 
   const managers = await User.find({
-    $or: [{ name: new RegExp(query, "i") }, { email: new RegExp(query, "i") }],
+    $or: [
+      { first: new RegExp(query, "i") },
+      { last: new RegExp(query, "i") },
+      { email: new RegExp(query, "i") }
+    ],
     roles: "manager"
   }).select({
     _id: 1,
-    name: 1,
+    first: 1,
+    last: 1,
     email: 1
   });
 
@@ -50,10 +53,11 @@ router.post("/", async (req, res) => {
   let user = await User.findOne({ email: req.body.email });
   if (user) return res.status(400).send("User already registered.");
 
-  user = new User(_.pick(req.body, ["email", "password", "profileId"]));
+  user = new User(
+    _.pick(req.body, ["first", "last", "email", "password", "profileId"])
+  );
   const salt = await bcrypt.genSalt(10);
   user.password = await bcrypt.hash(user.password, salt);
-  user.name = `${req.body.first} ${req.body.last}`;
   user.balance = 10;
 
   if (req.body.managerId) user.managerId = req.body.managerId;
@@ -65,7 +69,7 @@ router.post("/", async (req, res) => {
   res
     .header("x-auth-token", token)
     .header("access-control-expose-headers", "x-auth-token")
-    .send(_.pick(user, ["_id", "name", "email"]));
+    .send(_.pick(user, ["_id", "first", "last", "email"]));
 });
 
 module.exports = router;

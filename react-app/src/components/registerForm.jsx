@@ -84,7 +84,7 @@ class RegisterForm extends Component {
         const search = { ...this.state.search };
         search.isLoading = false;
         search.results = res.data.map(i => ({
-          title: i.name,
+          title: `${i.first} ${i.last}`,
           description: i.email,
           id: i._id
         }));
@@ -127,6 +127,7 @@ class RegisterForm extends Component {
     try {
       const res = await register(this.state.data);
       auth.loginWithJwt(res.headers["x-auth-token"]);
+      window.location = "/dashboard";
     } catch (ex) {
       if (ex.res && ex.res.status === 400) {
         const errors = { ...this.state.errors };

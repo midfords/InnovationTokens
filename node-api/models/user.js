@@ -4,8 +4,14 @@ const config = require("config");
 const Joi = require("joi");
 
 const userSchema = new mongoose.Schema({
-  _id: String,
-  name: {
+  first: {
+    type: String,
+    required: true,
+    trim: true,
+    minlength: 1,
+    maxlength: 255
+  },
+  last: {
     type: String,
     required: true,
     trim: true,
@@ -39,7 +45,13 @@ const userSchema = new mongoose.Schema({
 
 userSchema.methods.generateAuthToken = function() {
   return jwt.sign(
-    { _id: this._id, isAdmin: this.isAdmin, balance: this.balance },
+    {
+      _id: this._id,
+      roles: this.roles,
+      first: this.first,
+      last: this.last,
+      balance: this.balance
+    },
     config.get("jwtPrivateKey")
   );
 };
