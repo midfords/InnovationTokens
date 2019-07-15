@@ -2,18 +2,16 @@ import http from "./httpService";
 
 const apiEndpoint = "http://localhost:3900/api/transactions";
 
-export function send({ _id: user1 }, { _id: user2 }, amount) {
-  return http.post(apiEndpoint, {
-    userId: user1,
-    user2Id: user2,
+export function send({ _id: recipientId }, amount) {
+  return http.post(`${apiEndpoint}/send`, {
+    recipient: recipientId,
     amount
   });
 }
 
-export function spend({ _id: id }, description, amount) {
-  return http.post(apiEndpoint, {
-    userId: id,
-    description,
+export function spend(message, amount) {
+  return http.post(`${apiEndpoint}/spend`, {
+    message,
     amount
   });
 }

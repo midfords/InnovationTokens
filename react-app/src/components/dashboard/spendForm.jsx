@@ -7,7 +7,7 @@ class SpendForm extends Component {
   state = {
     data: {
       amount: "",
-      description: ""
+      message: ""
     },
     balance: 0,
     success: false,
@@ -22,7 +22,7 @@ class SpendForm extends Component {
       .max(Joi.ref("balance"))
       .required()
       .label("Amount"),
-    description: Joi.string()
+    message: Joi.string()
       .required()
       .label("Description")
   };
@@ -39,10 +39,10 @@ class SpendForm extends Component {
 
   doSubmit = async () => {
     const { balance } = this.state;
-    const { amount, description } = this.state.data;
+    const { amount, message } = this.state.data;
 
     const { error: errors } = Joi.validate(
-      { balance, amount, description },
+      { balance, amount, message },
       this.schema,
       {
         abortEarly: false
@@ -61,7 +61,7 @@ class SpendForm extends Component {
         "http://localhost:3900/api/transactions/spend",
         this.state.data
       );
-      this.setState({ success: true, data: { amount: "", description: "" } });
+      this.setState({ success: true, data: { amount: "", message: "" } });
     } catch (ex) {
       if (ex.res && ex.res.status === 400) {
         const errors = { ...this.state.errors };
@@ -73,7 +73,7 @@ class SpendForm extends Component {
 
   render() {
     const { success } = this.state;
-    const { amount, description } = this.state.data;
+    const { amount, message } = this.state.data;
 
     return (
       <React.Fragment>
@@ -95,13 +95,13 @@ class SpendForm extends Component {
             fluid
             required
             placeholder="Description"
-            onChange={e => this.updateData("description", e.target.value)}
-            value={description}
+            onChange={e => this.updateData("message", e.target.value)}
+            value={message}
           />
           <Button
             type="submit"
             className="primary basic"
-            disabled={!this.state.data.amount || !this.state.data.description}
+            disabled={!this.state.data.amount || !this.state.data.message}
           >
             Spend
           </Button>
