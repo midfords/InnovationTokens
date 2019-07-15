@@ -1,17 +1,22 @@
-import React from "react";
+import React, { Component } from "react";
 import { Header, Icon, Divider } from "semantic-ui-react";
+import http from "../../services/httpService";
 
-const Balance = () => {
-  return (
-    <div className="ui segment">
-      <Header as="h3">
-        <Icon name="clock outline" />
-        Balance
-      </Header>
-      <Divider />
-      13T
-    </div>
-  );
-};
+class Balance extends Component {
+  render() {
+    const { balance } = this.props;
+
+    return (
+      <div className="ui segment">
+        <Header>
+          <Icon name="clock outline" />
+          Balance
+        </Header>
+        <Divider />
+        {balance}T
+      </div>
+    );
+  }
+}
 
 export default Balance;

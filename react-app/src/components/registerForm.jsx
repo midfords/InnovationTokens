@@ -5,7 +5,6 @@ import {
   Input,
   Button,
   Popup,
-  Icon,
   Grid,
   GridColumn,
   Search
@@ -129,13 +128,13 @@ class RegisterForm extends Component {
     if (!this.state.data.email.includes("@hrsdc-rhdcc.gc.ca"))
       this.state.data.email = `${this.state.data.email}@hrsdc-rhdcc.gc.ca`;
 
-    const error = Joi.validate(this.state.data, this.schema, {
+    const { errors } = Joi.validate(this.state.data, this.schema, {
       abortEarly: false
     });
-    if (error) {
-      console.log(error);
+    if (errors) {
+      console.log(errors);
 
-      this.setState({ errors: error });
+      this.setState({ errors });
       return;
     }
 
