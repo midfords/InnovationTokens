@@ -14,12 +14,12 @@ class InnovationFeed extends Component {
     this.setState({ isFetching: false, feed: data });
   }
 
-  renderTransaction({ kind, user, user2, amount, description, hash }) {
+  renderTransaction({ kind, sender, recipient, amount, description, hash }) {
     switch (kind) {
       case "spend":
         return (
           <FeedSpend
-            user={user}
+            sender={sender}
             amount={amount}
             description={description}
             hash={hash}
@@ -28,8 +28,8 @@ class InnovationFeed extends Component {
       case "send":
         return (
           <FeedSend
-            user={user}
-            user2={user2}
+            sender={sender}
+            recipient={recipient}
             amount={amount}
             description={description}
             hash={hash}

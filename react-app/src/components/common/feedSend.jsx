@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Feed } from "semantic-ui-react";
 
-const FeedSend = ({ user, user2, amount, hash }) => {
+const FeedSend = ({ sender, recipient, amount, hash }) => {
   return (
     <Feed.Event>
       <Feed.Label>
@@ -10,12 +10,12 @@ const FeedSend = ({ user, user2, amount, hash }) => {
       </Feed.Label>
       <Feed.Content>
         <Feed.Summary>
-          <Link to={`/profile/${user.id}`}>
-            <Feed.User>{user.name}</Feed.User>
+          <Link to={`/profile/${sender.id}`}>
+            <Feed.User>{`${sender.first} ${sender.last}`}</Feed.User>
           </Link>{" "}
           gave{" "}
-          <Link to={`/profile/${user2.id}`}>
-            <Feed.User>{user2.name}</Feed.User>
+          <Link to={`/profile/${recipient.id}`}>
+            <Feed.User>{`${recipient.first} ${recipient.last}`}</Feed.User>
           </Link>{" "}
           {amount} token
           {amount > 1 ? "s" : ""}.<Feed.Date>4 hours ago</Feed.Date>

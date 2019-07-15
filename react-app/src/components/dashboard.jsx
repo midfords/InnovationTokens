@@ -25,7 +25,9 @@ class Tokens extends Component {
             <Goal />
             <Leaderboard />
           </div>
-          <Feed />
+          <div className="six wide column">
+            <Feed />
+          </div>
         </div>
       </React.Fragment>
     );
