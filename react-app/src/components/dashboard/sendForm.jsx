@@ -7,6 +7,7 @@ class SendForm extends Component {
   state = {
     data: {
       amount: "",
+      message: "",
       recipientId: ""
     },
     search: {
@@ -26,6 +27,7 @@ class SendForm extends Component {
       .max(Joi.ref("balance"))
       .required()
       .label("Amount"),
+    message: Joi.string().label("Message"),
     recipientId: Joi.string()
       .required()
       .label("Recipient")
@@ -71,10 +73,10 @@ class SendForm extends Component {
 
   doSubmit = () => {
     const { balance } = this.state;
-    const { amount, recipientId } = this.state.data;
+    const { amount, message, recipientId } = this.state.data;
 
     const { error: errors } = Joi.validate(
-      { balance, amount, recipientId },
+      { balance, amount, message, recipientId },
       this.schema,
       {
         abortEarly: false
@@ -108,6 +110,12 @@ class SendForm extends Component {
             fluid
             placeholder="Amount"
             onChange={e => this.updateData("amount", e.target.value)}
+          />
+          <Form.Input
+            required
+            fluid
+            placeholder="Message"
+            onChange={e => this.updateData("message", e.target.value)}
           />
           <Form.Field
             fluid

@@ -49,8 +49,7 @@ userSchema.methods.generateAuthToken = function() {
       _id: this._id,
       roles: this.roles,
       first: this.first,
-      last: this.last,
-      balance: this.balance
+      last: this.last
     },
     config.get("jwtPrivateKey")
   );
