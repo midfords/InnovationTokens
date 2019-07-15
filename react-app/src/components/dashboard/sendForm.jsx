@@ -33,8 +33,8 @@ class SendForm extends Component {
       .label("Recipient")
   };
 
-  componentDidMount() {
-    this.setState({ balance: this.props.balance });
+  componentWillReceiveProps({ balance }) {
+    this.setState({ balance });
   }
 
   handleResultSelect = (e, { result }) => {
@@ -71,7 +71,7 @@ class SendForm extends Component {
     this.setState({ data });
   };
 
-  doSubmit = () => {
+  doSubmit = async () => {
     const { balance } = this.state;
     const { amount, message, recipientId } = this.state.data;
 
@@ -89,6 +89,10 @@ class SendForm extends Component {
     }
 
     try {
+      await http.post(
+        "http://localhost:3900/api/transactions/send",
+        this.state.data
+      );
     } catch (ex) {
       if (ex.res && ex.res.status === 400) {
         const errors = { ...this.state.errors };

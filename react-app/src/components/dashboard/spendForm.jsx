@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Joi from "joi-browser";
 import { Form, Button } from "semantic-ui-react";
+import http from "../../services/httpService";
 
 class SpendForm extends Component {
   state = {
@@ -25,8 +26,8 @@ class SpendForm extends Component {
       .label("Description")
   };
 
-  componentDidMount() {
-    this.setState({ balance: this.props.balance });
+  componentWillReceiveProps({ balance }) {
+    this.setState({ balance });
   }
 
   updateData = (k, v) => {
@@ -35,7 +36,7 @@ class SpendForm extends Component {
     this.setState({ data });
   };
 
-  doSubmit = () => {
+  doSubmit = async () => {
     const { balance } = this.state;
     const { amount, description } = this.state.data;
 
@@ -48,11 +49,17 @@ class SpendForm extends Component {
     );
 
     if (errors) {
+      console.log(errors);
+
       this.setState({ errors });
       return;
     }
 
     try {
+      await http.post(
+        "http://localhost:3900/api/transactions/spend",
+        this.state.data
+      );
     } catch (ex) {
       if (ex.res && ex.res.status === 400) {
         const errors = { ...this.state.errors };

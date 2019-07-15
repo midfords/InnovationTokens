@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import http from "../services/httpService";
 import NavBar from "./common/navbar";
 import Balance from "./dashboard/balance";
 import Goal from "./dashboard/goal";
@@ -8,8 +9,13 @@ import BalanceActions from "./dashboard/balanceActions";
 
 class Tokens extends Component {
   state = {
-    balance: 20
+    balance: ""
   };
+
+  async componentWillMount() {
+    const { data } = await http.get("http://localhost:3900/api/users/me");
+    this.setState({ balance: data.balance });
+  }
 
   render() {
     const { balance } = this.state;

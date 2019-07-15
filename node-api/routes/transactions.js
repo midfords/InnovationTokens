@@ -74,7 +74,7 @@ router.post("/send", auth, async (req, res) => {
 router.post("/spend", auth, async (req, res) => {
   try {
     const { _id } = req.user;
-    const { amount, message } = req.body;
+    const { amount, description } = req.body;
 
     const user = await User.findById(_id);
     if (!user) return res.status(400).send("Invalid user.");
@@ -93,7 +93,7 @@ router.post("/spend", auth, async (req, res) => {
           first: user.first,
           last: user.last
         },
-        message,
+        description,
         amount,
         hash: ""
       });
