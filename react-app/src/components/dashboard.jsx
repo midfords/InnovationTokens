@@ -9,21 +9,22 @@ import BalanceActions from "./dashboard/balanceActions";
 
 class Tokens extends Component {
   state = {
+    first: "",
     balance: ""
   };
 
   async componentWillMount() {
     const { data } = await http.get("http://localhost:3900/api/users/me");
-    this.setState({ balance: data.balance });
+    this.setState({ balance: data.balance, first: data.first });
   }
 
   render() {
-    const { balance } = this.state;
+    const { balance, first } = this.state;
 
     return (
       <React.Fragment>
         <NavBar />
-        <h1 className="ui header container">Tokens Dashboard</h1>
+        <h1 className="ui header container">Good Afternoon, {first}!</h1>
         <div className="ui grid container">
           <div className="ten wide column">
             <Balance balance={balance} />

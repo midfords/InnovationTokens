@@ -10,7 +10,13 @@ class InnovationFeed extends Component {
 
   async componentDidMount() {
     this.setState({ isFetching: true });
-    const { data } = await http.get("http://localhost:3900/api/feed");
+    let { data } = await http.get("http://localhost:3900/api/feed");
+    console.log(data);
+
+    data = data.sort((i, j) => j._id.localeCompare(i._id));
+
+    console.log(data);
+
     this.setState({ isFetching: false, feed: data });
   }
 
@@ -53,7 +59,7 @@ class InnovationFeed extends Component {
       <div className="ui segment">
         <Header as="h3">
           <Icon name="rss" />
-          Innovation Feed
+          Activity Feed
         </Header>
         <Divider />
         <Feed>{this.state.feed.map(item => this.renderTransaction(item))}</Feed>
