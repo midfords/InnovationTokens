@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Joi from "joi-browser";
-import { Form, Button, Search, Popup } from "semantic-ui-react";
+import { Form, Button, Search, Popup, Message, Icon } from "semantic-ui-react";
 import http from "../../services/httpService";
 
 class SendForm extends Component {
@@ -16,6 +16,7 @@ class SendForm extends Component {
       value: ""
     },
     balance: 0,
+    success: false,
     errors: {}
   };
 
@@ -93,6 +94,12 @@ class SendForm extends Component {
         "http://localhost:3900/api/transactions/send",
         this.state.data
       );
+      const state = { ...this.state };
+      state.success = true;
+      state.data.amount = "";
+      state.data.message = "";
+      state.search.value = "";
+      this.setState(state);
     } catch (ex) {
       if (ex.res && ex.res.status === 400) {
         const errors = { ...this.state.errors };
@@ -103,23 +110,32 @@ class SendForm extends Component {
   };
 
   render() {
+    const { success } = this.state;
+    const { amount, message } = this.state.data;
     const { isLoading, value, results } = this.state.search;
 
     return (
       <React.Fragment>
         <h4>Send Tokens</h4>
+        {success && (
+          <Message positive fluid>
+            <Icon className="green check circle outline" /> Tokens sent!
+          </Message>
+        )}
         <Form onSubmit={this.doSubmit}>
           <Form.Input
             required
             fluid
             placeholder="Amount"
             onChange={e => this.updateData("amount", e.target.value)}
+            value={amount}
           />
           <Form.Input
             required
             fluid
             placeholder="Message"
             onChange={e => this.updateData("message", e.target.value)}
+            value={message}
           />
           <Form.Field
             fluid

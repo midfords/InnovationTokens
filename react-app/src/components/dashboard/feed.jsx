@@ -11,12 +11,7 @@ class InnovationFeed extends Component {
   async componentDidMount() {
     this.setState({ isFetching: true });
     let { data } = await http.get("http://localhost:3900/api/feed");
-    console.log(data);
-
-    data = data.sort((i, j) => j._id.localeCompare(i._id));
-
-    console.log(data);
-
+    data.sort((i, j) => j._id.localeCompare(i._id));
     this.setState({ isFetching: false, feed: data });
   }
 

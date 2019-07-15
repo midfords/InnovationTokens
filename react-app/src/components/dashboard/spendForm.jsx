@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Joi from "joi-browser";
-import { Form, Button } from "semantic-ui-react";
+import { Form, Button, Icon, Message } from "semantic-ui-react";
 import http from "../../services/httpService";
 
 class SpendForm extends Component {
@@ -10,6 +10,7 @@ class SpendForm extends Component {
       description: ""
     },
     balance: 0,
+    success: false,
     errors: {}
   };
 
@@ -60,6 +61,7 @@ class SpendForm extends Component {
         "http://localhost:3900/api/transactions/spend",
         this.state.data
       );
+      this.setState({ success: true, data: { amount: "", description: "" } });
     } catch (ex) {
       if (ex.res && ex.res.status === 400) {
         const errors = { ...this.state.errors };
@@ -70,21 +72,31 @@ class SpendForm extends Component {
   };
 
   render() {
+    const { success } = this.state;
+    const { amount, description } = this.state.data;
+
     return (
       <React.Fragment>
         <h4>Spend Tokens</h4>
+        {success && (
+          <Message positive fluid>
+            <Icon className="green check circle outline" /> Tokens spent!
+          </Message>
+        )}
         <Form onSubmit={this.doSubmit}>
           <Form.Input
             required
             fluid
             placeholder="Amount"
             onChange={e => this.updateData("amount", e.target.value)}
+            value={amount}
           />
           <Form.Input
             fluid
             required
             placeholder="Description"
             onChange={e => this.updateData("description", e.target.value)}
+            value={description}
           />
           <Button
             type="submit"
