@@ -1,17 +1,23 @@
 import http from "./httpService";
+import config from "../config.json";
 
-const apiEndpoint = "http://localhost:3900/api/transactions";
+const apiEndpoint = `${config.apiUrl}/transactions`;
 
-export function send({ _id: recipientId }, amount) {
+function send({ recipientId, amount }) {
   return http.post(`${apiEndpoint}/send`, {
-    recipient: recipientId,
+    recipientId,
     amount
   });
 }
 
-export function spend(message, amount) {
+function spend({ message, amount }) {
   return http.post(`${apiEndpoint}/spend`, {
     message,
     amount
   });
 }
+
+export default {
+  send: send,
+  spend: spend
+};

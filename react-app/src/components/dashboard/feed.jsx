@@ -3,14 +3,14 @@ import { Feed, Header, Icon, Divider } from "semantic-ui-react";
 import FeedSpend from "../common/feedSpend";
 import FeedSend from "../common/feedSend";
 import FeedDistribute from "../common/feedDistribute";
-import http from "../../services/httpService";
+import feed from "../../services/feedService";
 
 class InnovationFeed extends Component {
   state = { isFetching: false, feed: [] };
 
   async componentDidMount() {
     this.setState({ isFetching: true });
-    let { data } = await http.get("http://localhost:3900/api/feed");
+    let { data } = await feed.get();
     data.sort((i, j) => j._id.localeCompare(i._id));
     this.setState({ isFetching: false, feed: data });
   }
@@ -48,8 +48,6 @@ class InnovationFeed extends Component {
   }
 
   render() {
-    console.log(this.state.transactions);
-
     return (
       <div className="ui segment">
         <Header as="h3">

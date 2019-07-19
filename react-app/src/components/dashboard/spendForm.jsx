@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Joi from "joi-browser";
 import { Form, Button, Icon, Message } from "semantic-ui-react";
-import http from "../../services/httpService";
+import transactionService from "../../services/transactionService";
 
 class SpendForm extends Component {
   state = {
@@ -50,17 +50,12 @@ class SpendForm extends Component {
     );
 
     if (errors) {
-      console.log(errors);
-
       this.setState({ errors });
       return;
     }
 
     try {
-      await http.post(
-        "http://localhost:3900/api/transactions/spend",
-        this.state.data
-      );
+      await transactionService.spend(this.state.data);
       this.setState({ success: true, data: { amount: "", message: "" } });
     } catch (ex) {
       if (ex.res && ex.res.status === 400) {

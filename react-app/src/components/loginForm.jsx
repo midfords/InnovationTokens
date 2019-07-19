@@ -45,8 +45,6 @@ class LoginForm extends Component {
 
   render() {
     if (auth.getCurrentUser()) return <Redirect to="/dashboard" />;
-    console.log(auth);
-    console.log(auth.getCurrentUser());
 
     return (
       <React.Fragment>

@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import Joi from "joi-browser";
 import { Form, Button, Search, Popup, Message, Icon } from "semantic-ui-react";
-import http from "../../services/httpService";
+import userService from "../../services/userService";
+import transactionService from "../../services/transactionService";
 
 class SendForm extends Component {
   state = {
@@ -53,7 +54,7 @@ class SendForm extends Component {
 
     this.setState({ search });
 
-    http.get(`http://localhost:3900/api/users?query=${value}`).then(res => {
+    userService.userLookup(value).then(res => {
       const search = { ...this.state.search };
       search.isLoading = false;
       search.results = res.data.map(i => ({
@@ -90,10 +91,7 @@ class SendForm extends Component {
     }
 
     try {
-      await http.post(
-        "http://localhost:3900/api/transactions/send",
-        this.state.data
-      );
+      await transactionService.send(this.state.data);
       const state = { ...this.state };
       state.success = true;
       state.data.amount = "";

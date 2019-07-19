@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import http from "../services/httpService";
 import NavBar from "./common/navbar";
 import Balance from "./dashboard/balance";
 import Goal from "./dashboard/goal";
 import Feed from "./dashboard/feed";
 import Leaderboard from "./dashboard/leaderboard";
 import BalanceActions from "./dashboard/balanceActions";
+import userService from "../services/userService";
 
 class Tokens extends Component {
   state = {
@@ -14,7 +14,7 @@ class Tokens extends Component {
   };
 
   async componentWillMount() {
-    const { data } = await http.get("http://localhost:3900/api/users/me");
+    const { data } = await userService.me();
     this.setState({ balance: data.balance, first: data.first });
   }
 
