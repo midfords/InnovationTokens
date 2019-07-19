@@ -7,7 +7,8 @@ import {
   Popup,
   Grid,
   GridColumn,
-  Search
+  Search,
+  Message
 } from "semantic-ui-react";
 import _ from "lodash";
 import Joi from "joi-browser";
@@ -33,7 +34,8 @@ class RegisterForm extends Component {
       value: ""
     },
     isManager: false,
-    errors: {}
+    errors: {},
+    formError: ""
   };
 
   schema = {
@@ -62,12 +64,31 @@ class RegisterForm extends Component {
       .allow("")
   };
 
+  validate = () => {
+    const errors = {};
+    const { error } = Joi.validate(this.state.data, this.schema, {
+      abortEarly: false
+    });
+
+    if (!error) return errors;
+
+    for (let item of error.details) errors[item.path[0]] = item.message;
+    return errors;
+  };
+
   handleResultSelect = (e, { result }) => {
     const state = { ...this.state };
     state.search.value = result.title;
     state.data.managerId = result.id;
 
     this.setState(state);
+  };
+
+  validateProperty = (name, value) => {
+    const obj = { [name]: value };
+    const schema = { [name]: this.schema[name] };
+    const { error } = Joi.validate(obj, schema);
+    return error ? error.details[0].message : null;
   };
 
   handleSearchChange = async (e, { value }) => {
@@ -108,46 +129,44 @@ class RegisterForm extends Component {
     this.setState({ data });
   };
 
-  validateProperty = ({ name, value }) => {
-    const obj = { [name]: value };
-    const schema = { [name]: this.schema[name] };
-    const { error } = Joi.validate(obj, schema);
-    return error ? error.details[0].message : null;
-  };
+  handleChange = (e, { name, value }) => {
+    const errors = { ...this.state.errors };
+    const errorMessage = this.validateProperty(name, value);
+    if (errorMessage) errors[name] = errorMessage;
+    else delete errors[name];
 
-  updateData = (k, v) => {
     const data = { ...this.state.data };
-    data[k] = v;
-    this.setState({ data });
+    data[name] = value;
+    this.setState({ data, errors });
   };
 
   doSubmit = async () => {
     if (!this.state.data.email.includes("@hrsdc-rhdcc.gc.ca"))
       this.state.data.email = `${this.state.data.email}@hrsdc-rhdcc.gc.ca`;
 
-    const { errors } = Joi.validate(this.state.data, this.schema, {
-      abortEarly: false
-    });
-    if (errors) {
-      this.setState({ errors });
-      return;
-    }
+    const errors = this.validate();
+    this.setState({ errors });
+    if (!_.isEmpty(errors)) return;
 
     try {
       const res = await userService.register(this.state.data);
       auth.loginWithJwt(res.headers["x-auth-token"]);
       window.location = "/dashboard";
     } catch (ex) {
-      if (ex.res && ex.res.status === 400) {
-        const errors = { ...this.state.errors };
-        errors.first = ex.res.data;
-        this.setState({ errors });
+      console.log(ex);
+      console.log(ex.response);
+
+      if (ex.response && ex.response.status === 400) {
+        const formError = ex.response.data;
+        console.log(formError);
+
+        this.setState({ formError });
       }
     }
   };
 
   render() {
-    const { isManager, errors } = this.state;
+    const { isManager, errors, formError } = this.state;
     const { isLoading, value, results } = this.state.search;
 
     return (
@@ -163,22 +182,27 @@ class RegisterForm extends Component {
               </div>
               <br />
               <br />
+              {formError && (
+                <Message error header="Registration error" list={[formError]} />
+              )}
               <Form onSubmit={this.doSubmit}>
                 <Form.Group widths="equal">
                   <Form.Input
                     required
                     fluid
+                    name="first"
                     label="First Name"
                     placeholder="First name"
-                    onChange={e => this.updateData("first", e.target.value)}
+                    onChange={this.handleChange}
                     error={errors.first}
                   />
                   <Form.Input
                     fluid
                     required
+                    name="last"
                     label="Last Name"
                     placeholder="Last name"
-                    onChange={e => this.updateData("last", e.target.value)}
+                    onChange={this.handleChange}
                     error={errors.last}
                   />
                 </Form.Group>
@@ -186,10 +210,11 @@ class RegisterForm extends Component {
                   <label>Email</label>
                   <Form.Input error={errors.email}>
                     <Input
+                      name="email"
                       label={{ basic: true, content: "@hrsdc-rhdcc.gc.ca" }}
                       labelPosition="right"
                       placeholder="Email"
-                      onChange={e => this.updateData("email", e.target.value)}
+                      onChange={this.handleChange}
                     />
                   </Form.Input>
                 </Form.Field>
@@ -197,19 +222,21 @@ class RegisterForm extends Component {
                   <Form.Input
                     required
                     fluid
+                    name="password"
                     type="password"
                     label="Password"
                     placeholder="Password"
-                    onChange={e => this.updateData("password", e.target.value)}
+                    onChange={this.handleChange}
                     error={errors.password}
                   />
                   <Form.Input
                     fluid
                     required
+                    name="confirm"
                     type="password"
                     label="Confirm"
                     placeholder="Confirm"
-                    onChange={e => this.updateData("confirm", e.target.value)}
+                    onChange={this.handleChange}
                     error={errors.confirm}
                   />
                 </Form.Group>

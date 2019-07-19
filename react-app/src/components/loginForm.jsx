@@ -54,8 +54,6 @@ class LoginForm extends Component {
 
   doSubmit = async () => {
     const errors = this.validate();
-    console.log("Validate");
-    console.log(errors);
 
     this.setState({ errors });
     if (!_.isEmpty(errors)) return;
@@ -78,11 +76,6 @@ class LoginForm extends Component {
     if (auth.getCurrentUser()) return <Redirect to="/dashboard" />;
     const { errors, formError } = this.state;
 
-    console.log("Render");
-
-    console.log(errors);
-    console.log(formError);
-
     return (
       <React.Fragment>
         <NavBar />
@@ -91,7 +84,7 @@ class LoginForm extends Component {
             <div className="column">
               <Header>Login</Header>
               {formError && (
-                <Message error fluid header="Login error" list={[formError]} />
+                <Message error header="Login error" list={[formError]} />
               )}
               <Form size="large" onSubmit={this.doSubmit}>
                 <Form.Input error={errors.email}>
@@ -112,7 +105,12 @@ class LoginForm extends Component {
                   onChange={this.handleChange}
                   error={errors.password}
                 />
-                <Button primary>Login</Button>
+                <Button
+                  primary
+                  disabled={!this.state.data.email || !this.state.data.password}
+                >
+                  Login
+                </Button>
               </Form>
               <div className="ui message">
                 Or <Link to="/register">sign up</Link>.
