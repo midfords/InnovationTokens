@@ -94,16 +94,15 @@ class LoginForm extends Component {
                 <Message error fluid header="Login error" list={[formError]} />
               )}
               <Form size="large" onSubmit={this.doSubmit}>
-                <Form.Field error={errors.email}>
+                <Form.Input error={errors.email}>
                   <Input
                     name="email"
                     label={{ basic: true, content: "@hrsdc-rhdcc.gc.ca" }}
                     labelPosition="right"
                     placeholder="Email"
                     onChange={this.handleChange}
-                    error={errors.email}
                   />
-                </Form.Field>
+                </Form.Input>
                 <Form.Input
                   name="password"
                   fluid

@@ -184,13 +184,14 @@ class RegisterForm extends Component {
                 </Form.Group>
                 <Form.Field required>
                   <label>Email</label>
-                  <Input
-                    label={{ basic: true, content: "@hrsdc-rhdcc.gc.ca" }}
-                    labelPosition="right"
-                    placeholder="Email"
-                    onChange={e => this.updateData("email", e.target.value)}
-                    error={errors.email}
-                  />
+                  <Form.Input error={errors.email}>
+                    <Input
+                      label={{ basic: true, content: "@hrsdc-rhdcc.gc.ca" }}
+                      labelPosition="right"
+                      placeholder="Email"
+                      onChange={e => this.updateData("email", e.target.value)}
+                    />
+                  </Form.Input>
                 </Form.Field>
                 <Form.Group widths="equal">
                   <Form.Input
