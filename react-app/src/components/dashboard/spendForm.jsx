@@ -87,8 +87,6 @@ class SpendForm extends Component {
   render() {
     const { success, errors, formError } = this.state;
 
-    console.log(this.state);
-
     return (
       <React.Fragment>
         <h4>Spend Tokens</h4>
