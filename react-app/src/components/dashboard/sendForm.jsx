@@ -136,7 +136,6 @@ class SendForm extends Component {
             value={message}
           />
           <Form.Field
-            fluid
             required
             placeholder="Recipient"
             onChange={e => this.updateData("recipientId", e.target.value)}

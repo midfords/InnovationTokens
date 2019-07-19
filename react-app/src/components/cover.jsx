@@ -7,17 +7,8 @@ class Cover extends Component {
         <div className="ui inverted vertical banner-img masthead center aligned segment">
           <div className="ui container">
             <div className="ui large secondary inverted pointing menu">
-              <a href="/" className="toc item">
-                <i className="sidebar icon" />
-              </a>
-              <a href="/" className="active item">
-                Home
-              </a>
-              <a href="/" className="item">
-                Wallet
-              </a>
-              <a href="/" className="item">
-                About
+              <a href="/dashboard" className="item">
+                Dashboard
               </a>
               <div className="right item">
                 <a href="/login" className="ui inverted button">

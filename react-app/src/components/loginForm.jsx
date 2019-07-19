@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Redirect, Link } from "react-router-dom";
-import { Button, Form, Header, Input } from "semantic-ui-react";
+import { Button, Form, Header, Input, Message } from "semantic-ui-react";
 import _ from "lodash";
 import Joi from "joi-browser";
 import NavBar from "./common/navbar";
@@ -9,7 +9,8 @@ import auth from "../services/authService";
 class LoginForm extends Component {
   state = {
     data: { email: "", password: "" },
-    errors: {}
+    errors: {},
+    formError: ""
   };
 
   schema = {
@@ -21,13 +22,44 @@ class LoginForm extends Component {
       .label("Password")
   };
 
+  validate = () => {
+    const errors = {};
+    const { error } = Joi.validate(this.state.data, this.schema, {
+      abortEarly: false
+    });
+
+    if (!error) return errors;
+
+    for (let item of error.details) errors[item.path[0]] = item.message;
+    return errors;
+  };
+
+  validateProperty = (name, value) => {
+    const obj = { [name]: value };
+    const schema = { [name]: this.schema[name] };
+    const { error } = Joi.validate(obj, schema);
+    return error ? error.details[0].message : null;
+  };
+
   handleChange = (e, { name, value }) => {
+    const errors = { ...this.state.errors };
+    const errorMessage = this.validateProperty(name, value);
+    if (errorMessage) errors[name] = errorMessage;
+    else delete errors[name];
+
     let obj = { ...this.state.data };
     obj[name] = value;
-    this.setState({ data: obj });
+    this.setState({ data: obj, errors });
   };
 
   doSubmit = async () => {
+    const errors = this.validate();
+    console.log("Validate");
+    console.log(errors);
+
+    this.setState({ errors });
+    if (!_.isEmpty(errors)) return;
+
     try {
       let { email, password } = this.state.data;
       email += "@hrsdc-rhdcc.gc.ca";
@@ -36,15 +68,20 @@ class LoginForm extends Component {
       window.location = state ? state.from.pathname : "/dashboard";
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
-        const errors = { ...this.state.errors };
-        errors.username = ex.response.data;
-        this.setState({ errors });
+        const formError = ex.response.data;
+        this.setState({ formError });
       }
     }
   };
 
   render() {
     if (auth.getCurrentUser()) return <Redirect to="/dashboard" />;
+    const { errors, formError } = this.state;
+
+    console.log("Render");
+
+    console.log(errors);
+    console.log(formError);
 
     return (
       <React.Fragment>
@@ -53,14 +90,18 @@ class LoginForm extends Component {
           <div className="ui middle aligned center aligned grid">
             <div className="column">
               <Header>Login</Header>
+              {formError && (
+                <Message error fluid header="Login error" list={[formError]} />
+              )}
               <Form size="large" onSubmit={this.doSubmit}>
-                <Form.Field>
+                <Form.Field error={errors.email}>
                   <Input
                     name="email"
                     label={{ basic: true, content: "@hrsdc-rhdcc.gc.ca" }}
                     labelPosition="right"
                     placeholder="Email"
                     onChange={this.handleChange}
+                    error={errors.email}
                   />
                 </Form.Field>
                 <Form.Input
@@ -70,6 +111,7 @@ class LoginForm extends Component {
                   placeholder="Password"
                   type="password"
                   onChange={this.handleChange}
+                  error={errors.password}
                 />
                 <Button primary>Login</Button>
               </Form>

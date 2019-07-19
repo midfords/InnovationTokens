@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import NavBar from "./common/navbar";
 import Balance from "./dashboard/balance";
-import Goal from "./dashboard/goal";
 import Feed from "./dashboard/feed";
-import Leaderboard from "./dashboard/leaderboard";
 import BalanceActions from "./dashboard/balanceActions";
 import userService from "../services/userService";
 
@@ -29,8 +27,6 @@ class Tokens extends Component {
           <div className="ten wide column">
             <Balance balance={balance} />
             <BalanceActions balance={balance} />
-            <Goal />
-            <Leaderboard />
           </div>
           <div className="six wide column">
             <Feed />

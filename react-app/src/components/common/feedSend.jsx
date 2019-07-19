@@ -11,11 +11,11 @@ const FeedSend = ({ sender, recipient, amount, hash }) => {
       <Feed.Content>
         <Feed.Summary>
           <Link to={`/profile/${sender.id}`}>
-            <Feed.User>{`${sender.first} ${sender.last}`}</Feed.User>
+            {`${sender.first} ${sender.last}`}
           </Link>{" "}
           gave{" "}
           <Link to={`/profile/${recipient.id}`}>
-            <Feed.User>{`${recipient.first} ${recipient.last}`}</Feed.User>
+            {`${recipient.first} ${recipient.last}`}
           </Link>{" "}
           {amount} token
           {amount > 1 ? "s" : ""}.<Feed.Date>4 hours ago</Feed.Date>
