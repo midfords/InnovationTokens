@@ -1,9 +1,10 @@
+const auth = require("../middleware/auth");
 const _ = require("lodash");
 const { Transaction } = require("../models/transaction");
 const express = require("express");
 const router = express.Router();
 
-router.get("/", async (req, res) => {
+router.get("/", auth, async (req, res) => {
   let { from, to } = req.query;
 
   if (from === undefined || to === undefined) {

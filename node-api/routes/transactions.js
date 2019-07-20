@@ -9,6 +9,7 @@ const {
 } = require("../models/transaction");
 const { User, validate: validateUser } = require("../models/user");
 const auth = require("../middleware/auth");
+const admin = require("../middleware/admin");
 const express = require("express");
 const router = express.Router();
 
@@ -131,7 +132,7 @@ router.post("/send", auth, async (req, res) => {
   }
 });
 
-router.post("/distribute", auth, async (req, res) => {
+router.post("/distribute", [auth, admin], async (req, res) => {
   try {
     const { _id } = req.user;
     const { amount } = req.body;
