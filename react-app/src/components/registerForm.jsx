@@ -41,15 +41,19 @@ class RegisterForm extends Component {
   schema = {
     first: Joi.string()
       .required()
+      .max(255)
       .label("First"),
     last: Joi.string()
       .required()
+      .max(255)
       .label("Last"),
     email: Joi.string()
       .required()
+      .max(255)
       .label("Email"),
     password: Joi.string()
       .min(5)
+      .max(1024)
       .required()
       .label("Password"),
     confirm: Joi.string().label("Confirm"),

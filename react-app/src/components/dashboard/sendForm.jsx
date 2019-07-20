@@ -31,9 +31,7 @@ class SendForm extends Component {
     message: Joi.string()
       .label("Message")
       .allow(""),
-    recipientId: Joi.string()
-      .required()
-      .label("Recipient")
+    recipientId: Joi.required().label("Recipient")
   };
 
   validate = () => {

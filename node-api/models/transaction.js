@@ -41,7 +41,10 @@ function validateSendTransaction(transaction) {
     amount: Joi.number()
       .integer()
       .min(1)
-      .required()
+      .required(),
+    message: Joi.string()
+      .max(240)
+      .allow("")
   };
 
   return Joi.validate(transaction, schema);
@@ -51,7 +54,7 @@ function validateSpendTransaction(transaction) {
   const schema = {
     message: Joi.string()
       .min(1)
-      .max(255)
+      .max(240)
       .required(),
     amount: Joi.number()
       .integer()
