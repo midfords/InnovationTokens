@@ -1,19 +1,27 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 import NavBar from "./common/navbar";
 import Balance from "./dashboard/balance";
+import Team from "./dashboard/team";
 import Feed from "./dashboard/feed";
 import BalanceActions from "./dashboard/balanceActions";
 import userService from "../services/userService";
+import auth from "../services/authService";
 
 class Tokens extends Component {
   state = {
     first: "",
-    balance: ""
+    balance: "",
+    isManager: false
   };
 
   updateUser = async () => {
     const { data } = await userService.me();
-    this.setState({ balance: data.balance, first: data.first });
+    this.setState({
+      balance: data.balance,
+      first: data.first,
+      isManager: data.roles.includes("manager")
+    });
   };
 
   async componentWillMount() {
@@ -21,7 +29,8 @@ class Tokens extends Component {
   }
 
   render() {
-    const { balance, first } = this.state;
+    if (!auth.getCurrentUser()) return <Redirect to="/login" />;
+    const { balance, first, isManager } = this.state;
 
     return (
       <React.Fragment>
@@ -29,8 +38,13 @@ class Tokens extends Component {
         <h1 className="ui header container">Good Afternoon, {first}!</h1>
         <div className="ui grid container">
           <div className="ten wide column">
-            <Balance balance={balance} />
-            <BalanceActions balance={balance} onChange={this.updateUser} />
+            {!isManager && (
+              <div>
+                <Balance balance={balance} />
+                <BalanceActions balance={balance} onChange={this.updateUser} />
+              </div>
+            )}
+            {isManager && <Team />}
           </div>
           <div className="six wide column">
             <Feed />
