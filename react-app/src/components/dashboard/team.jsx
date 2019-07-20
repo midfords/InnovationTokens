@@ -20,7 +20,7 @@ class Team extends Component {
 
   renderListItem(user) {
     return (
-      <List.Item>
+      <List.Item key={user._id}>
         <List.Content floated="right">{user.balance}T</List.Content>
         <Image avatar src="/avatars/avatar-3.svg" />
         <List.Content>
@@ -35,8 +35,6 @@ class Team extends Component {
 
   render() {
     const { team } = this.state;
-
-    console.log(team);
 
     return (
       <div className="ui segment">

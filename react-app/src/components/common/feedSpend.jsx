@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Feed, Image } from "semantic-ui-react";
 
-const FeedSpend = ({ sender, amount, description, hash }) => {
+const FeedSpend = ({ sender, amount, message, hash }) => {
   return (
     <Feed.Event>
       <Feed.Label>
@@ -16,7 +16,7 @@ const FeedSpend = ({ sender, amount, description, hash }) => {
           spent {amount} tokens.
           <Feed.Date>Just now</Feed.Date>
         </Feed.Summary>
-        <Feed.Extra>{description}</Feed.Extra>
+        <Feed.Extra>{message}</Feed.Extra>
         <Feed.Meta>Hash: {hash}.</Feed.Meta>
       </Feed.Content>
     </Feed.Event>
