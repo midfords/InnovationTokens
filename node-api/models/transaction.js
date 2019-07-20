@@ -65,6 +65,18 @@ function validateSpendTransaction(transaction) {
   return Joi.validate(transaction, schema);
 }
 
+function validateDistributeTransaction(transaction) {
+  const schema = {
+    amount: Joi.number()
+      .integer()
+      .min(1)
+      .required()
+  };
+
+  return Joi.validate(transaction, schema);
+}
+
 exports.Transaction = Transaction;
 exports.validateSend = validateSendTransaction;
 exports.validateSpend = validateSpendTransaction;
+exports.validateDistribute = validateDistributeTransaction;

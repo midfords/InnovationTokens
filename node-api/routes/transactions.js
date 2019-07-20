@@ -4,7 +4,8 @@ const Fawn = require("fawn");
 const {
   Transaction,
   validateSend,
-  validateSpend
+  validateSpend,
+  validateDistribute
 } = require("../models/transaction");
 const { User, validate: validateUser } = require("../models/user");
 const auth = require("../middleware/auth");
@@ -130,6 +131,44 @@ router.post("/send", auth, async (req, res) => {
   }
 });
 
-router.post("/distribute", auth, async (req, res) => {});
+router.post("/distribute", auth, async (req, res) => {
+  try {
+    const { _id } = req.user;
+    const { amount } = req.body;
+
+    const { error } = validateDistribute(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+
+    const sender = await User.findById(_id);
+    if (!sender) return res.status(400).send("Invalid sender.");
+
+    try {
+      const transaction = new Transaction({
+        kind: "distribute",
+        sender: {
+          _id: sender._id,
+          first: sender.first,
+          last: sender.last
+        },
+        message: "",
+        amount,
+        hash: ""
+      });
+
+      await new Fawn.Task()
+        .save("transactions", transaction)
+        .update("users", { roles: [] }, { $inc: { balance: parseInt(amount) } })
+        .options({ multi: true })
+        .run();
+
+      res.send(transaction);
+    } catch (err) {
+      res.status(500).send("Transaction failed.");
+    }
+  } catch (err) {
+    console.log(err);
+    if (err) return res.status(400).send(`Transaction was rejected.`);
+  }
+});
 
 module.exports = router;
