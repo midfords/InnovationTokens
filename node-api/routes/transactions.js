@@ -1,8 +1,12 @@
 const _ = require("lodash");
 const mongoose = require("mongoose");
 const Fawn = require("fawn");
-const { Transaction } = require("../models/transaction");
-const { User } = require("../models/user");
+const {
+  Transaction,
+  validateSend,
+  validateSpend
+} = require("../models/transaction");
+const { User, validate: validateUser } = require("../models/user");
 const auth = require("../middleware/auth");
 const express = require("express");
 const router = express.Router();
@@ -14,16 +18,17 @@ router.post("/spend", auth, async (req, res) => {
     const { _id } = req.user;
     const { amount, message } = req.body;
 
-    console.log(req.body);
+    const { error } = validateSpend(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
 
     const user = await User.findById(_id);
     if (!user) return res.status(400).send("Invalid user.");
 
+    if (amount > user.balance)
+      return res.status(400).send("Insufficient balance.");
+
     const manager = await User.findById(user.managerId);
     if (!manager) return res.status(400).send("Manager not found.");
-
-    // const { error } = validate(req.body);
-    // if (error) return res.status(400).send(error.details[0].message);
 
     try {
       const transaction = new Transaction({
@@ -64,7 +69,8 @@ router.post("/send", auth, async (req, res) => {
     const { _id } = req.user;
     const { amount, message, recipientId } = req.body;
 
-    console.log(req.body);
+    const { error } = validateSend(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
 
     const [sender, recipient] = await Promise.all([
       User.findById(_id),
@@ -72,10 +78,11 @@ router.post("/send", auth, async (req, res) => {
     ]);
 
     if (!sender) return res.status(400).send("Invalid sender.");
-    if (!recipient) return res.status(400).send("Invalid recipient.");
 
-    // const { error } = validate(req.body);
-    // if (error) return res.status(400).send(error.details[0].message);
+    if (amount > sender.balance)
+      return res.status(400).send("Insufficient balance.");
+
+    if (!recipient) return res.status(400).send("Invalid recipient.");
 
     try {
       const transaction = new Transaction({
