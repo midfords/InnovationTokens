@@ -11,9 +11,13 @@ class Tokens extends Component {
     balance: ""
   };
 
-  async componentWillMount() {
+  updateUser = async () => {
     const { data } = await userService.me();
     this.setState({ balance: data.balance, first: data.first });
+  };
+
+  async componentWillMount() {
+    this.updateUser();
   }
 
   render() {
@@ -26,7 +30,7 @@ class Tokens extends Component {
         <div className="ui grid container">
           <div className="ten wide column">
             <Balance balance={balance} />
-            <BalanceActions balance={balance} />
+            <BalanceActions balance={balance} onChange={this.updateUser} />
           </div>
           <div className="six wide column">
             <Feed />

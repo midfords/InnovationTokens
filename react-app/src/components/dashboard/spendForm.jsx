@@ -78,6 +78,7 @@ class SpendForm extends Component {
     try {
       await transactionService.spend(this.state.data);
       this.setState({ success: true, data: { amount: "", message: "" } });
+      this.props.onChange();
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const formError = ex.response.data;
@@ -88,6 +89,7 @@ class SpendForm extends Component {
 
   render() {
     const { success, errors, formError } = this.state;
+    const { amount, message } = this.state.data;
 
     return (
       <React.Fragment>
@@ -108,6 +110,7 @@ class SpendForm extends Component {
             placeholder="Amount"
             onChange={this.handleChange}
             error={errors.amount}
+            value={amount}
           />
           <Form.Input
             fluid
@@ -116,6 +119,7 @@ class SpendForm extends Component {
             placeholder="Description"
             onChange={this.handleChange}
             error={errors.message}
+            value={message}
           />
           <Button
             type="submit"

@@ -121,6 +121,7 @@ class SendForm extends Component {
       state.data.message = "";
       state.search.value = "";
       this.setState(state);
+      this.props.onChange();
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const formError = ex.response.data;
