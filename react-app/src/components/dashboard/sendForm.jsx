@@ -8,6 +8,7 @@ import transactionService from "../../services/transactionService";
 class SendForm extends Component {
   state = {
     data: {
+      balance: 0,
       amount: "",
       message: "",
       recipientId: ""
@@ -17,21 +18,24 @@ class SendForm extends Component {
       results: [],
       value: ""
     },
-    balance: 0,
     success: false,
     errors: {}
   };
 
   schema = {
+    balance: Joi.number().required(),
     amount: Joi.number()
       .integer()
       .min(1)
+      .max(Joi.ref("balance"))
       .required()
       .label("Amount"),
     message: Joi.string()
-      .label("Message")
-      .allow(""),
-    recipientId: Joi.required().label("Recipient")
+      .allow("")
+      .label("Message"),
+    recipientId: Joi.string()
+      .required()
+      .label("Recipient")
   };
 
   validate = () => {
@@ -40,9 +44,6 @@ class SendForm extends Component {
     const { error } = Joi.validate(data, this.schema, {
       abortEarly: false
     });
-    if (this.state.data.amount > this.state.balance) {
-      errors.amount = "Insufficient balance.";
-    }
 
     if (!error) return errors;
 
@@ -51,14 +52,20 @@ class SendForm extends Component {
   };
 
   validateProperty = (name, value) => {
-    const obj = { [name]: value };
-    const schema = { [name]: this.schema[name] };
+    const obj = { balance: this.state.data.balance, [name]: value };
+    const schema = { balance: this.schema.balance, [name]: this.schema[name] };
     const { error } = Joi.validate(obj, schema);
+    console.log(name);
+    console.log(value);
+    console.log(error);
+
     return error ? error.details[0].message : null;
   };
 
   componentWillReceiveProps({ balance }) {
-    this.setState({ balance });
+    const data = { ...this.state.data };
+    data.balance = balance;
+    this.setState({ data });
   }
 
   handleResultSelect = (e, { result }) => {

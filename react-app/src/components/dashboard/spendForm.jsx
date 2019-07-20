@@ -7,19 +7,21 @@ import transactionService from "../../services/transactionService";
 class SpendForm extends Component {
   state = {
     data: {
+      balance: 0,
       amount: "",
       message: ""
     },
-    balance: 0,
     success: false,
     errors: {},
     formError: ""
   };
 
   schema = {
+    balance: Joi.number().required(),
     amount: Joi.number()
       .integer()
       .min(1)
+      .max(Joi.ref("balance"))
       .required()
       .label("Amount"),
     message: Joi.string()
@@ -33,9 +35,6 @@ class SpendForm extends Component {
     const { error } = Joi.validate(data, this.schema, {
       abortEarly: false
     });
-    if (this.state.data.amount > this.state.balance) {
-      errors.amount = "Insufficient balance.";
-    }
 
     if (!error) return errors;
 
@@ -44,14 +43,19 @@ class SpendForm extends Component {
   };
 
   validateProperty = (name, value) => {
-    const obj = { [name]: value };
-    const schema = { [name]: this.schema[name] };
+    const obj = { balance: this.state.data.balance, [name]: value };
+    const schema = {
+      balance: this.state.data.balance,
+      [name]: this.schema[name]
+    };
     const { error } = Joi.validate(obj, schema);
     return error ? error.details[0].message : null;
   };
 
   componentWillReceiveProps({ balance }) {
-    this.setState({ balance });
+    const data = { ...this.state.data };
+    data.balance = balance;
+    this.setState({ data });
   }
 
   handleChange = (e, { name, value }) => {
@@ -61,9 +65,7 @@ class SpendForm extends Component {
     else delete errors[name];
 
     const data = { ...this.state.data };
-    if (name === "amount") data[name] = parseInt(value);
-    else data[name] = value;
-
+    data[name] = value;
     this.setState({ data, errors });
   };
 
