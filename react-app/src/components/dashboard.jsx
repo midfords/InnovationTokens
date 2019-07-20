@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
+import { Header, Label } from "semantic-ui-react";
 import NavBar from "./common/navbar";
 import Balance from "./dashboard/balance";
 import Team from "./dashboard/team";
@@ -35,7 +36,9 @@ class Tokens extends Component {
     return (
       <React.Fragment>
         <NavBar />
-        <h1 className="ui header container">Good Afternoon, {first}!</h1>
+        <Header className="ui container" size="huge">
+          Good Afternoon, {first}! {isManager && <Label>Manager</Label>}
+        </Header>
         <div className="ui grid container">
           <div className="ten wide column">
             {!isManager && (
