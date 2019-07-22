@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Joi from "joi-browser";
+import _ from "lodash";
 import { Form, Button, Search, Popup, Message, Icon } from "semantic-ui-react";
 import userService from "../../services/userService";
 import transactionService from "../../services/transactionService";
@@ -7,6 +8,7 @@ import transactionService from "../../services/transactionService";
 class SendForm extends Component {
   state = {
     data: {
+      balance: 0,
       amount: "",
       message: "",
       recipientId: ""
@@ -16,27 +18,54 @@ class SendForm extends Component {
       results: [],
       value: ""
     },
-    balance: 0,
     success: false,
     errors: {}
   };
 
   schema = {
-    balance: Joi.number(),
+    balance: Joi.number().required(),
     amount: Joi.number()
       .integer()
       .min(1)
       .max(Joi.ref("balance"))
       .required()
       .label("Amount"),
-    message: Joi.string().label("Message"),
+    message: Joi.string()
+      .allow("")
+      .label("Message"),
     recipientId: Joi.string()
       .required()
       .label("Recipient")
   };
 
+  validate = () => {
+    const errors = {};
+    const data = { ...this.state.data };
+    const { error } = Joi.validate(data, this.schema, {
+      abortEarly: false
+    });
+
+    if (!error) return errors;
+
+    for (let item of error.details) errors[item.path[0]] = item.message;
+    return errors;
+  };
+
+  validateProperty = (name, value) => {
+    const obj = { balance: this.state.data.balance, [name]: value };
+    const schema = { balance: this.schema.balance, [name]: this.schema[name] };
+    const { error } = Joi.validate(obj, schema);
+    console.log(name);
+    console.log(value);
+    console.log(error);
+
+    return error ? error.details[0].message : null;
+  };
+
   componentWillReceiveProps({ balance }) {
-    this.setState({ balance });
+    const data = { ...this.state.data };
+    data.balance = balance;
+    this.setState({ data });
   }
 
   handleResultSelect = (e, { result }) => {
@@ -67,28 +96,22 @@ class SendForm extends Component {
     });
   };
 
-  updateData = (k, v) => {
+  handleChange = (e, { name, value }) => {
+    const errors = { ...this.state.errors };
+    const errorMessage = this.validateProperty(name, value);
+    if (errorMessage) errors[name] = errorMessage;
+    else delete errors[name];
+
     const data = { ...this.state.data };
-    data[k] = v;
-    this.setState({ data });
+    data[name] = value;
+    this.setState({ data, errors });
   };
 
   doSubmit = async () => {
-    const { balance } = this.state;
-    const { amount, message, recipientId } = this.state.data;
+    const errors = this.validate();
 
-    const { error: errors } = Joi.validate(
-      { balance, amount, message, recipientId },
-      this.schema,
-      {
-        abortEarly: false
-      }
-    );
-
-    if (errors) {
-      this.setState({ errors });
-      return;
-    }
+    this.setState({ errors });
+    if (!_.isEmpty(errors)) return;
 
     try {
       await transactionService.send(this.state.data);
@@ -98,17 +121,17 @@ class SendForm extends Component {
       state.data.message = "";
       state.search.value = "";
       this.setState(state);
+      this.props.onChange();
     } catch (ex) {
-      if (ex.res && ex.res.status === 400) {
-        const errors = { ...this.state.errors };
-        errors.first = ex.res.data;
-        this.setState({ errors });
+      if (ex.response && ex.response.status === 400) {
+        const formError = ex.response.data;
+        this.setState({ success: false, formError });
       }
     }
   };
 
   render() {
-    const { success } = this.state;
+    const { success, errors, formError } = this.state;
     const { amount, message } = this.state.data;
     const { isLoading, value, results } = this.state.search;
 
@@ -120,26 +143,33 @@ class SendForm extends Component {
             <Icon className="green check circle outline" /> Tokens sent!
           </Message>
         )}
+        {formError && (
+          <Message error header="Something went wrong." list={[formError]} />
+        )}
         <Form onSubmit={this.doSubmit}>
           <Form.Input
             required
             fluid
+            name="amount"
             placeholder="Amount"
-            onChange={e => this.updateData("amount", e.target.value)}
+            onChange={this.handleChange}
             value={amount}
+            error={errors.amount}
           />
           <Form.Input
-            required
             fluid
+            name="message"
             placeholder="Message"
-            onChange={e => this.updateData("message", e.target.value)}
+            onChange={this.handleChange}
             value={message}
+            error={errors.message}
           />
           <Form.Field
-            fluid
             required
+            name="recipient"
             placeholder="Recipient"
-            onChange={e => this.updateData("recipientId", e.target.value)}
+            onChange={this.handleChange}
+            error={errors.recipient}
           >
             <Popup
               content="Lookup people by name or email."

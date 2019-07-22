@@ -8,14 +8,8 @@ const NavBar = () => {
         <Link className="header item" to="/">
           Innovation Tokens
         </Link>
-        <Link className="item" to="/tokens">
-          Tokens
-        </Link>
-        <Link className="item" to="/game">
-          Game
-        </Link>
-        <Link className="item" to="/">
-          About
+        <Link className="item" to="/dashboard">
+          Dashboard
         </Link>
       </div>
     </div>

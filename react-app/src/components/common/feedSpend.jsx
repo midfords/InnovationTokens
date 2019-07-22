@@ -11,7 +11,7 @@ const FeedSpend = ({ sender, amount, description, hash }) => {
       <Feed.Content>
         <Feed.Summary>
           <Link to={`/profile/${sender.id}`}>
-            <Feed.User>{`${sender.first} ${sender.last}`}</Feed.User>
+            {`${sender.first} ${sender.last}`}
           </Link>{" "}
           spent {amount} tokens.
           <Feed.Date>Just now</Feed.Date>

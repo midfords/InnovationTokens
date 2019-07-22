@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 const Joi = require("joi");
+Joi.objectId = require("joi-objectid")(Joi);
 
 const userSchema = new mongoose.Schema({
   first: {
@@ -74,14 +75,14 @@ function validateUser(user) {
       .email(),
     password: Joi.string()
       .min(5)
-      .max(255)
+      .max(1024)
       .required(),
     profileId: Joi.number()
       .integer()
       .min(1)
       .max(8)
       .required(),
-    managerId: Joi.string().allow("")
+    managerId: Joi.objectId().allow("")
   };
 
   return Joi.validate(user, schema);

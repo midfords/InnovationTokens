@@ -15,11 +15,20 @@ class InnovationFeed extends Component {
     this.setState({ isFetching: false, feed: data });
   }
 
-  renderTransaction({ kind, sender, recipient, amount, description, hash }) {
+  renderTransaction({
+    _id,
+    kind,
+    sender,
+    recipient,
+    amount,
+    description,
+    hash
+  }) {
     switch (kind) {
       case "spend":
         return (
           <FeedSpend
+            key={_id}
             sender={sender}
             amount={amount}
             description={description}
@@ -29,6 +38,7 @@ class InnovationFeed extends Component {
       case "send":
         return (
           <FeedSend
+            key={_id}
             sender={sender}
             recipient={recipient}
             amount={amount}
@@ -39,6 +49,7 @@ class InnovationFeed extends Component {
       case "dist":
         return (
           <FeedDistribute
+            key={_id}
             amount={amount}
             description={description}
             hash={hash}
@@ -52,12 +63,16 @@ class InnovationFeed extends Component {
       <div className="ui segment">
         <Header as="h3">
           <Icon name="rss" />
-          Activity Feed
+          Recent Activity
         </Header>
         <Divider />
-        <Feed>{this.state.feed.map(item => this.renderTransaction(item))}</Feed>
-        <Divider />
-        <a href="#">Load More</a>
+        <Feed>
+          {this.state.feed
+            .slice(0, 10)
+            .map(item => this.renderTransaction(item))}
+        </Feed>
+        {/* <Divider />
+        <a href="#">Load More</a> */}
       </div>
     );
   }
