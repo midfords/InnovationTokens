@@ -1,20 +1,20 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Feed } from "semantic-ui-react";
+import { Feed, Image } from "semantic-ui-react";
 
 const FeedSend = ({ sender, recipient, amount, hash }) => {
   return (
     <Feed.Event>
       <Feed.Label>
-        <img src="/avatars/avatar-1.svg" />
+        <Image src="/avatars/avatar-1.svg" />
       </Feed.Label>
       <Feed.Content>
         <Feed.Summary>
-          <Link to={`/profile/${sender.id}`}>
+          <Link to={`/profile/${sender._id}`}>
             {`${sender.first} ${sender.last}`}
           </Link>{" "}
           gave{" "}
-          <Link to={`/profile/${recipient.id}`}>
+          <Link to={`/profile/${recipient._id}`}>
             {`${recipient.first} ${recipient.last}`}
           </Link>{" "}
           {amount} token

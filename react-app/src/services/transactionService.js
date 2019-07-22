@@ -17,7 +17,15 @@ function spend({ message, amount }) {
   });
 }
 
+function distribute({ amount }) {
+  return http.post(`${apiEndpoint}/distribute`, {
+    amount
+  });
+}
+
 export default {
   send: send,
-  spend: spend
+  spend: spend,
+  distribute,
+  distribute
 };

@@ -6,11 +6,18 @@ const express = require("express");
 const router = express.Router();
 
 router.get("/me", auth, async (req, res) => {
-  const user = await User.findById(req.user._id).select("-password");
+  const user = await User.findById(req.user._id)
+    .select("-password")
+    .lean();
+
+  if (user.roles.includes("manager")) {
+    user.team = await User.find({ managerId: user._id }).select("-password");
+  }
+
   res.send(user);
 });
 
-router.get("/", async (req, res) => {
+router.get("/", auth, async (req, res) => {
   const { query } = req.query;
 
   if (query === undefined)
@@ -55,7 +62,7 @@ router.get("/managers", async (req, res) => {
   res.send(managers);
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", auth, async (req, res) => {
   const { id } = req.params;
 
   if (id === undefined) return res.status(400).send("No user ID provided.");
