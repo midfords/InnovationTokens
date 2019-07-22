@@ -2,8 +2,12 @@ const mongoose = require("mongoose");
 //const Joi = require("joi");
 
 const userSchema = new mongoose.Schema({
-  id: { type: String, required: true },
-  name: {
+  _id: { type: String, required: true },
+  first: {
+    type: String,
+    required: true
+  },
+  last: {
     type: String,
     required: true
   }
@@ -12,17 +16,15 @@ const userSchema = new mongoose.Schema({
 const transactionSchema = new mongoose.Schema({
   kind: {
     type: String,
-    enum: ["spend", "send", "dist"],
+    enum: ["spend", "send", "distribute"],
     required: true
   },
-  user: { type: userSchema },
-  user2: { type: userSchema },
-  description: { type: String, maxlength: 140 },
+  sender: { type: userSchema },
+  recipient: { type: userSchema },
+  message: { type: String, maxlength: 240 },
   amount: {
-    type: String,
-    required: true,
-    minlength: 5,
-    maxlength: 1024
+    type: Number,
+    required: true
   },
   hash: {
     type: String,

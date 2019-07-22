@@ -1,15 +1,15 @@
 import React from "react";
 import { Header, Icon, Divider } from "semantic-ui-react";
 
-const Balance = () => {
+const Balance = ({ balance }) => {
   return (
     <div className="ui segment">
-      <Header as="h3">
+      <Header>
         <Icon name="clock outline" />
         Balance
       </Header>
       <Divider />
-      13T
+      {balance}T
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Feed, Header, Divider } from "semantic-ui-react";
 import NavBar from "./common/navbar";
-import http from "../services/httpService";
+import userService from "../services/userService";
 
 class Profile extends Component {
   state = { isFetching: false, user: {}, feed: [] };
@@ -9,7 +9,7 @@ class Profile extends Component {
   async componentDidMount() {
     const { id } = this.props.match.params;
     this.setState({ isFetching: true });
-    const { data } = await http.get(`http://localhost:3900/api/users/${id}`);
+    const { data } = await userService.findById(id);
     this.setState({ isFetching: false, user: data });
   }
 

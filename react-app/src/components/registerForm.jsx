@@ -5,7 +5,6 @@ import {
   Input,
   Button,
   Popup,
-  Icon,
   Grid,
   GridColumn,
   Search
@@ -14,8 +13,7 @@ import _ from "lodash";
 import Joi from "joi-browser";
 import NavBar from "./common/navbar";
 import auth from "../services/authService";
-import http from "../services/httpService";
-import { register } from "../services/userService";
+import userService from "../services/userService";
 import ProfilePic from "./common/profilePic";
 
 class RegisterForm extends Component {
@@ -73,25 +71,23 @@ class RegisterForm extends Component {
   };
 
   handleSearchChange = async (e, { value }) => {
-    const search = { ...this.state.search };
+    let search = { ...this.state.search };
     search.isLoading = true;
     search.value = value;
 
     this.setState({ search });
 
-    http
-      .get(`http://localhost:3900/api/users/managers?query=${value}`)
-      .then(res => {
-        const search = { ...this.state.search };
-        search.isLoading = false;
-        search.results = res.data.map(i => ({
-          title: `${i.first} ${i.last}`,
-          description: i.email,
-          id: i._id
-        }));
+    userService.managerLookup(value).then(res => {
+      const search = { ...this.state.search };
+      search.isLoading = false;
+      search.results = res.data.map(i => ({
+        title: `${i.first} ${i.last}`,
+        description: i.email,
+        id: i._id
+      }));
 
-        this.setState({ search });
-      });
+      this.setState({ search });
+    });
   };
 
   handleCheckChange = (e, { checked }) => {
@@ -129,18 +125,16 @@ class RegisterForm extends Component {
     if (!this.state.data.email.includes("@hrsdc-rhdcc.gc.ca"))
       this.state.data.email = `${this.state.data.email}@hrsdc-rhdcc.gc.ca`;
 
-    const error = Joi.validate(this.state.data, this.schema, {
+    const { errors } = Joi.validate(this.state.data, this.schema, {
       abortEarly: false
     });
-    if (error) {
-      console.log(error);
-
-      this.setState({ errors: error });
+    if (errors) {
+      this.setState({ errors });
       return;
     }
 
     try {
-      const res = await register(this.state.data);
+      const res = await userService.register(this.state.data);
       auth.loginWithJwt(res.headers["x-auth-token"]);
       window.location = "/dashboard";
     } catch (ex) {

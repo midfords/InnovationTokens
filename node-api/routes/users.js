@@ -11,7 +11,25 @@ router.get("/me", auth, async (req, res) => {
 });
 
 router.get("/", async (req, res) => {
-  const users = await User.find().select("-password");
+  const { query } = req.query;
+
+  if (query === undefined)
+    return res.send(await User.find().select("-password"));
+
+  const users = await User.find({
+    $or: [
+      { first: new RegExp(query, "i") },
+      { last: new RegExp(query, "i") },
+      { email: new RegExp(query, "i") }
+    ],
+    roles: []
+  }).select({
+    _id: 1,
+    first: 1,
+    last: 1,
+    email: 1
+  });
+
   res.send(users);
 });
 
